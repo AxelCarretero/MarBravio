@@ -5,9 +5,7 @@ export default function Hero() {
   return (
     <header id="inicio" className="hero">
       <div className="container text-center">
-        <img className="logo floaty mb-4" src="/assets/logo.jpg" alt="Logo MarBravio" />
-        <h1>MAR BRAVÍO</h1>
-        <div className="tagline">Cocina del Mar</div>
+        <img className="logo floaty" src="/assets/logo.jpg" alt="MarBravio · Cocina del Mar" />
         <svg className="wave-svg" width="160" height="20" viewBox="0 0 160 20" fill="none">
           <path d="M0 10 Q 20 0 40 10 T 80 10 T 120 10 T 160 10" stroke="#79c4e8" strokeWidth="3" fill="none" strokeLinecap="round"/>
         </svg>
