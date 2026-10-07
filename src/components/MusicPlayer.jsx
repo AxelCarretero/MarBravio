@@ -1,30 +1,76 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 const SRC = '/assets/marbravio-music.mp3'
+const PREF_KEY = 'mb-music-pref'
+
+function readPref() {
+  try {
+    return localStorage.getItem(PREF_KEY)
+  } catch {
+    return null
+  }
+}
+
+function savePref(value) {
+  try {
+    localStorage.setItem(PREF_KEY, value)
+  } catch {
+    /* modo privado: se ignora */
+  }
+}
 
 export default function MusicPlayer() {
   const audioRef = useRef(null)
   const [playing, setPlaying] = useState(false)
-  const [blocked, setBlocked] = useState(false)
+  const [muted, setMuted] = useState(true)
+  const [showHint, setShowHint] = useState(false)
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
 
     audio.volume = 0.35
+    audio.muted = true
 
-    const onPlay = () => { setPlaying(true); setBlocked(false) }
+    const pref = readPref()
+
+    const onPlay = () => setPlaying(true)
     const onPause = () => setPlaying(false)
-
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
 
-    // Intento de autoplay. Los navegadores lo bloquean si no hubo
-    // interacción previa del usuario; en ese caso mostramos el aviso.
-    audio.play().catch(() => {
-      setPlaying(false)
-      setBlocked(true)
-    })
+    // Chrome bloquea el autoplay CON sonido. El autoplay silencioso si se
+    // permite, por eso arrancamos en mute y pedimos el clic para el audio.
+    if (pref === 'off') {
+      return () => {
+        audio.removeEventListener('play', onPlay)
+        audio.removeEventListener('pause', onPause)
+      }
+    }
+
+    if (pref === 'on') {
+      // El visitante ya lo activo antes: intentamos con sonido.
+      audio.muted = false
+      audio
+        .play()
+        .then(() => {
+          setMuted(false)
+          setShowHint(false)
+        })
+        .catch(() => {
+          // Chrome lo bloqueo igual: caemos a silencio + aviso.
+          audio.muted = true
+          audio.play().catch(() => setShowHint(true))
+          setMuted(true)
+          setShowHint(true)
+        })
+    } else {
+      // Primera visita: autoplay silencioso (permitido por Chrome).
+      audio
+        .play()
+        .then(() => setShowHint(true))
+        .catch(() => setShowHint(true))
+    }
 
     return () => {
       audio.removeEventListener('play', onPlay)
@@ -35,29 +81,55 @@ export default function MusicPlayer() {
   const toggle = () => {
     const audio = audioRef.current
     if (!audio) return
+
     if (audio.paused) {
-      audio.play().catch(() => setBlocked(true))
-    } else {
-      audio.pause()
+      // Reproducir con sonido: siempre dentro de un clic, siempre permitido.
+      audio.muted = false
+      audio
+        .play()
+        .then(() => {
+          setMuted(false)
+          setShowHint(false)
+          savePref('on')
+        })
+        .catch(() => setShowHint(true))
+      return
     }
+
+    if (audio.muted) {
+      // Esta reproduciendose en silencio -> subir el volumen.
+      audio.muted = false
+      setMuted(false)
+      setShowHint(false)
+      savePref('on')
+      return
+    }
+
+    // Esta sonando -> pausar.
+    audio.pause()
+    savePref('off')
   }
+
+  const icon = !playing ? 'play_arrow' : muted ? 'volume_off' : 'pause'
 
   return (
     <>
       <button
-        className="music-toggle"
+        className={`music-toggle ${muted && playing ? 'muted' : ''}`}
         onClick={toggle}
-        aria-label={playing ? 'Pausar música' : 'Reproducir música'}
-        title={playing ? 'Pausar música' : 'Reproducir música'}
+        aria-label={!playing ? 'Reproducir música' : muted ? 'Activar sonido' : 'Pausar música'}
+        title={!playing ? 'Reproducir música' : muted ? 'Activar sonido' : 'Pausar música'}
       >
-        <span className="material-icons">{playing ? 'pause' : 'play_arrow'}</span>
+        <span className="material-icons">{icon}</span>
       </button>
 
-      {blocked && !playing && (
-        <div className="music-hint" onClick={toggle}>🎵 Toca ▶ para escuchar la música de MarBravio</div>
+      {showHint && (
+        <button className="music-hint" onClick={toggle}>
+          🎵 Toca el botón ▶ para escuchar la música
+        </button>
       )}
 
-      <audio ref={audioRef} src={SRC} loop preload="auto" />
+      <audio ref={audioRef} src={SRC} loop preload="auto" playsInline />
     </>
   )
 }
