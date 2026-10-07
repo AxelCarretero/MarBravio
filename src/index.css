@@ -54,6 +54,46 @@ h1, h2, h3, h4, .serif {
   transition: color .25s;
 }
 .mb-navbar .nav-link:hover { color: var(--sky) !important; }
+
+/* Botón de música en el header */
+.music-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(121, 196, 232, 0.4);
+  background: rgba(121, 196, 232, 0.12);
+  color: var(--sky);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .25s, transform .2s, color .25s;
+}
+.music-toggle:hover {
+  background: var(--sky);
+  color: var(--navy);
+  transform: scale(1.08);
+}
+.music-toggle .material-icons { font-size: 22px; }
+.music-hint {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy-soft);
+  border: 1px solid rgba(121, 196, 232, 0.4);
+  color: var(--cream);
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-size: .85rem;
+  cursor: pointer;
+  z-index: 1000;
+  animation: fadeUp .4s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
 .btn-whatsapp {
   background: #25d366;
   color: #fff !important;
