@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const SRC = '/assets/marbravio-music.mp3'
 const PREF_KEY = 'mb-music-pref'
@@ -123,11 +124,13 @@ export default function MusicPlayer() {
         <span className="material-icons">{icon}</span>
       </button>
 
-      {showHint && (
-        <button className="music-hint" onClick={toggle}>
-          🎵 Toca el botón ▶ para escuchar la música
-        </button>
-      )}
+      {showHint &&
+        createPortal(
+          <button className="music-hint" onClick={toggle}>
+            🎵 Toca el botón ▶ para escuchar la música
+          </button>,
+          document.body
+        )}
 
       <audio ref={audioRef} src={SRC} loop preload="auto" playsInline />
     </>
