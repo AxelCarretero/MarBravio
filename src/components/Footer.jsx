@@ -10,7 +10,7 @@ export default function Footer() {
             <p>Cocina del Mar — El sabor del mar a tu alcance. Fresco, auténtico, sin excusas.</p>
             <div className="social-icons mt-3">
               <a href="#" aria-label="Facebook"><span className="material-icons">facebook</span></a>
-              <a href="#" aria-label="Instagram"><span className="material-icons">photo_camera</span></a>
+              <a href="https://www.instagram.com/marbraviooficial?stkn=MWk0cmgxdzJnaTZxbg%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" aria-label="Instagram"><span className="material-icons">photo_camera</span></a>
               <a href="#" aria-label="TikTok"><span className="material-icons">music_note</span></a>
             </div>
           </div>
