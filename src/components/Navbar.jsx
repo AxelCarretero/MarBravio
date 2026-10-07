@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { WHATSAPP_NUMBER, WHATSAPP_MSG } from '../App'
+import MusicPlayer from './MusicPlayer'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -23,6 +24,9 @@ export default function Navbar() {
             <li className="nav-item">
               <a className="nav-link" target="_blank" rel="noreferrer"
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`} onClick={() => setOpen(false)}>Pedir</a>
+            </li>
+            <li className="nav-item">
+              <MusicPlayer />
             </li>
           </ul>
         </div>
