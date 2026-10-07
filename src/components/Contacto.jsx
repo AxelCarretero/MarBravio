@@ -22,7 +22,15 @@ export default function Contacto() {
         <div className="row g-4">
           <div className="col-lg-5">
             <div className="contacto-box">
-                            <p><span className="material-icons">location_on</span> Pamplona 1191, Santa Elena Alcalde, C.P. 44220, Guadalajara, Jal., México</p>
+                            <h3 className="serif mb-2" style={{ fontSize: '1.35rem', lineHeight: 1.3 }}>
+                Mariscos y aguachiles en Guadalajara, zona Atemajac
+              </h3>
+              <p style={{ color: 'rgba(246,241,231,.8)', fontSize: '.9rem' }}>
+                Cocina del mar en el poniente de Guadalajara. Mariscos frescos, aguachiles
+                preparados al momento y salsa marisquera de la casa. Orden Bravía $245,
+                1/2 orden $160 y Tosti $180.
+              </p>
+              <p><span className="material-icons">location_on</span> Pamplona 1191, Santa Elena Alcalde, C.P. 44220, Guadalajara, Jal., México</p>
               <p className="mt-2">
                 <a className="btn btn-sm btn-outline-light" style={{ borderRadius: 20 }} target="_blank" rel="noreferrer"
                   href="https://maps.app.goo.gl/ytgZ3CzYhC36BAc5A">📍 Ver en Google Maps</a>

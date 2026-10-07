@@ -1,12 +1,121 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-MX">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MarBravio · Cocina del Mar</title>
-    <meta name="description" content="MarBravio — El sabor del mar a tu alcance. Aguachiles frescos, auténticos y sin excusas. Pide por WhatsApp." />
+
+    <!-- ===== SEO principal ===== -->
+    <title>MarBravio · Cocina del Mar | Mariscos en Guadalajara, Zona Atemajac</title>
+    <meta
+      name="description"
+      content="MarBravio · Cocina del Mar en Guadalajara, zona Atemajac. Mariscos y aguachiles frescos: Verde, Tropical, Roja y Negra. Orden Bravía $245, 1/2 orden $160, Tosti $180. Pide por WhatsApp y recoge en Pamplona 1191, Santa Elena Alcalde."
+    />
+    <meta
+      name="keywords"
+      content="mariscos Guadalajara, mariscos en Atemajac, aguachiles Guadalajara, comida marina GDL, seafood Guadalajara, MarBravio, cocina del mar, aguachiles Zone Atemajac, restaurante Guadalajara, mariscos frescos, ZMG, Zapopan, Tlaquepaque"
+    />
+    <meta name="author" content="MarBravio · Cocina del Mar" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="language" content="Spanish" />
+    <meta name="geo.region" content="MX-JAL" />
+    <meta name="geo.placename" content="Guadalajara, Jalisco, Atemajac" />
+    <meta name="geo.position" content="20.7153053;-103.349427" />
+    <meta name="ICBM" content="20.7153053, -103.349427" />
+
+    <!-- ===== Open Graph / redes sociales ===== -->
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="MarBravio · Cocina del Mar" />
+    <meta property="og:title" content="MarBravio · Cocina del Mar | Mariscos en Guadalajara (Atemajac)" />
+    <meta
+      property="og:description"
+      content="Aguachiles frescos y mariscos en la zona Atemajac, Guadalajara. Verde, Tropical, Roja y Negra. Orden Bravía $245. Pide por WhatsApp."
+    />
+    <meta property="og:image" content="/assets/logo.jpg" />
+    <meta property="og:url" content="https://marbravio.com/" />
+
+    <!-- ===== Twitter ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MarBravio · Cocina del Mar | Mariscos en Guadalajara" />
+    <meta name="twitter:description" content="Aguachiles y mariscos frescos en la zona Atemajac, Guadalajara. Orden Bravía $245, 1/2 orden $160." />
+    <meta name="twitter:image" content="/assets/logo.jpg" />
+
+    <link rel="canonical" href="https://marbravio.com/" />
     <link rel="icon" type="image/jpeg" href="/assets/logo.jpg" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Montserrat:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet" />
+    <link rel="apple-touch-icon" href="/assets/logo.jpg" />
+
+    <!-- ===== Datos estructurados (Google / Schema.org) ===== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "MarBravio · Cocina del Mar",
+        "image": "https://marbravio.com/assets/logo.jpg",
+        "logo": "https://marbravio.com/assets/logo.jpg",
+        "url": "https://marbravio.com/",
+        "telephone": "+5213325995637",
+        "email": "zercherrera@gmail.com",
+        "priceRange": "$$",
+        "servesCuisine": ["Mariscos", "Comida mexicana", "Aguachiles"],
+        "description": "Mariscos y aguachiles frescos en la zona Atemajac de Guadalajara. Aguachiles Verde, Tropical, Roja y Negra, todos con pepino, cebolla morada, aguacate y salsa marisquera de la casa.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Pamplona 1191, Santa Elena Alcalde",
+          "addressLocality": "Guadalajara",
+          "addressRegion": "Jalisco",
+          "postalCode": "44220",
+          "addressCountry": "MX"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 20.7153053,
+          "longitude": -103.349427
+        },
+        "hasMap": "https://maps.app.goo.gl/ytgZ3CzYhC36BAc5A",
+        "sameAs": ["https://www.instagram.com/marbraviooficial"],
+        "acceptsReservations": "False",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Wednesday", "Thursday", "Saturday"],
+            "opens": "16:30",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Sunday",
+            "opens": "10:00",
+            "closes": "16:00"
+          }
+        ],
+        "menu": "https://marbravio.com/",
+        "acceptsReservationsUrl": "https://wa.me/5213325995637",
+        "hasMenu": {
+          "@type": "Menu",
+          "name": "Carta MarBravio",
+          "hasMenuSection": [
+            {
+              "@type": "MenuSection",
+              "name": "Aguachiles",
+              "hasMenuItem": [
+                { "@type": "MenuItem", "name": "Aguachile Verde (Clásico)", "description": "Salsa verde clásica con serrano, perejil, ajo, sal y pimienta.", "offers": { "@type": "Offer", "price": "245", "priceCurrency": "MXN" } },
+                { "@type": "MenuItem", "name": "Aguachile Tropical (El Travieso)", "description": "Salsa de mango con habanero tatemado, limón, ajo, sal y pimienta.", "offers": { "@type": "Offer", "price": "245", "priceCurrency": "MXN" } },
+                { "@type": "MenuItem", "name": "Aguachile Roja (De la Casa)", "description": "Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.", "offers": { "@type": "Offer", "price": "245", "priceCurrency": "MXN" } },
+                { "@type": "MenuItem", "name": "Aguachile Negro (El Condenado)", "description": "Salsas negras con toque ahumado, habanero, ajo, sal y pimienta.", "offers": { "@type": "Offer", "price": "245", "priceCurrency": "MXN" } },
+                { "@type": "MenuItem", "name": "1/2 Orden", "offers": { "@type": "Offer", "price": "160", "priceCurrency": "MXN" } },
+                { "@type": "MenuItem", "name": "Tosti", "offers": { "@type": "Offer", "price": "180", "priceCurrency": "MXN" } }
+              ]
+            }
+          ]
+        }
+      }
+    </script>
+
+    <!-- ===== Fuentes e iconos ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Montserrat:wght@400;500;600;700&family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   </head>
   <body>
