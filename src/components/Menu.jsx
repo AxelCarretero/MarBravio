@@ -3,7 +3,7 @@ import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
 
 const aguachiles = [
-  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', emoji: '🍋', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: serrano, perejil, ajo, sal y pimienta.' },
+  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', emoji: '🍋', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
   { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', emoji: '🥭', precio: 245, desc: 'Salsa de mango con un toque de habanero tatemado, limón, ajo, sal y pimienta.' },
   { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', emoji: '🌶️', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
   { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', emoji: '🔥', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
