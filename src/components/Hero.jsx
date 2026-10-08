@@ -10,7 +10,7 @@ export default function Hero() {
           <path d="M0 10 Q 20 0 40 10 T 80 10 T 120 10 T 160 10" stroke="#79c4e8" strokeWidth="3" fill="none" strokeLinecap="round"/>
         </svg>
         <h2 className="script" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.6rem)' }}>El sabor del mar a tu alcance</h2>
-        <p className="lead mt-3">FRESCO &nbsp;•&nbsp; AUTÉNTICO &nbsp;•&nbsp; SIN EXCUSAS</p>
+        <p className="lead mt-3">FRESCO &nbsp;•&nbsp; CALIDAD &nbsp;•&nbsp; SABOR</p>
         <div className="mt-4 d-flex justify-content-center gap-3 flex-wrap">
           <a href="#menu" className="btn btn-outline-light px-4 py-2" style={{ borderRadius: 30, letterSpacing: 1 }}>Ver el menú</a>
           <a className="btn btn-whatsapp px-4 py-2" target="_blank" rel="noreferrer"

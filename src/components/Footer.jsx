@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="row g-4">
           <div className="col-md-4">
             <h4 className="serif">MAR BRAVÍO</h4>
-            <p>Cocina del Mar — El sabor del mar a tu alcance. Fresco, auténtico, sin excusas.</p>
+            <p>Cocina del Mar — El sabor del mar a tu alcance. Fresco, calidad y sabor.</p>
             <div className="social-icons mt-3">
               <a href="#" aria-label="Facebook"><span className="material-icons">facebook</span></a>
               <a href="https://www.instagram.com/marbraviooficial?stkn=MWk0cmgxdzJnaTZxbg%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" aria-label="Instagram"><span className="material-icons">photo_camera</span></a>

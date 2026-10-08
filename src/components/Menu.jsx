@@ -59,7 +59,7 @@ export default function Menu() {
     <section id="menu">
       <div className="container">
         <h2 className="section-title">Nuestros Aguachiles</h2>
-        <div className="section-subtitle">frescos, auténticos, sin excusas</div>
+        <div className="section-subtitle">frescos, calidad y sabor</div>
         <div className="divider-line"></div>
 
         <div className="row g-4">
