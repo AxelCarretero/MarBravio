@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { WHATSAPP_NUMBER, WHATSAPP_MSG } from '../App'
-import MusicPlayer from './MusicPlayer'
+
+// Botón de música oculto temporalmente.
+// Para volver a mostrarlo, descomenta estas dos líneas:
+//   import MusicPlayer from './MusicPlayer'
+//   ...y en el <ul> debajo: <li className="nav-item"><MusicPlayer /></li>
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -25,9 +29,7 @@ export default function Navbar() {
               <a className="nav-link" target="_blank" rel="noreferrer"
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`} onClick={() => setOpen(false)}>Pedir</a>
             </li>
-            <li className="nav-item">
-              <MusicPlayer />
-            </li>
+            {/* Botón de música oculto temporalmente (ver import commented arriba) */}
           </ul>
         </div>
       </div>
