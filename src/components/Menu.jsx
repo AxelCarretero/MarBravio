@@ -206,34 +206,6 @@ export default function Menu() {
           Tú decides qué tan bravío lo quieres 🌶️
         </p>
 
-        {/* ---------- Extras ---------- */}
-        <div className="extras-box mt-4">
-          <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div className="d-flex align-items-center gap-3">
-              <span className="extras-icon">
-                <IconoAguachile tipo={EXTRA_SALSA.icono} color={EXTRA_SALSA.color} />
-              </span>
-              <div>
-                <strong style={{ color: 'var(--cream)' }}>¿Want más salsa marisquera?</strong>
-                <br />
-                <small style={{ color: 'rgba(246,241,231,.7)' }}>
-                  Extra de la casa · $15 c/u · máximo {MAX_EXTRAS} por pedido
-                </small>
-              </div>
-            </div>
-            <div className="d-flex align-items-center gap-2">
-              <span className="extras-contador">{extrasEnCarrito}/{MAX_EXTRAS}</span>
-              <button
-                className="btn-agregar btn-extras"
-                onClick={agregarSalsaExtra}
-                disabled={extrasEnCarrito >= MAX_EXTRAS}
-              >
-                {extrasEnCarrito >= MAX_EXTRAS ? 'Máximo alcanzado' : `+ Agregar salsa extra $${EXTRA_SALSA.precio}`}
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div className="prices-box mt-4">
           <h3 className="text-center serif">PRECIOS</h3>
           <div className="row text-center mt-4">
@@ -260,7 +232,35 @@ export default function Menu() {
 
         {/* ---------- Carrito de pedido ---------- */}
         <div className="contacto-box mt-5">
-          <h3 className="serif" style={{ letterSpacing: 2 }}>🛒 Tu pedido</h3>
+          <h3 className="serif" style={{ letterSpacing: 2 }}>🛒 Pedido</h3>
+
+          {/* ---------- Extras ---------- */}
+          <div className="extras-box mt-3 mb-4">
+            <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div className="d-flex align-items-center gap-3">
+                <span className="extras-icon">
+                  <IconoAguachile tipo={EXTRA_SALSA.icono} color={EXTRA_SALSA.color} />
+                </span>
+                <div>
+                  <strong style={{ color: 'var(--cream)' }}>¿Want más salsa marisquera?</strong>
+                  <br />
+                  <small style={{ color: 'rgba(246,241,231,.7)' }}>
+                    Extra de la casa · ${EXTRA_SALSA.precio} c/u · máximo {MAX_EXTRAS} por pedido
+                  </small>
+                </div>
+              </div>
+              <div className="d-flex align-items-center gap-2">
+                <span className="extras-contador">{extrasEnCarrito}/{MAX_EXTRAS}</span>
+                <button
+                  className="btn-extras"
+                  onClick={agregarSalsaExtra}
+                  disabled={extrasEnCarrito >= MAX_EXTRAS}
+                >
+                  {extrasEnCarrito >= MAX_EXTRAS ? 'Máximo alcanzado' : `+ Agregar salsa extra $${EXTRA_SALSA.precio}`}
+                </button>
+              </div>
+            </div>
+          </div>
           {cart.length === 0 ? (
             <p style={{ color: 'rgba(246,241,231,.7)' }}>Aún no agregas nada. Usa los botones <em>+ Agregar al pedido</em> de arriba.</p>
           ) : (
