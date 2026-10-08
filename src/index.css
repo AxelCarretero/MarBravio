@@ -329,6 +329,19 @@ section { padding: 80px 0; }
 .form-control::placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
+.form-select {
+  background-color: var(--navy-deep);
+  border: 1px solid rgba(121, 196, 232, 0.3);
+  color: var(--cream);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2379c4e8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+.form-select option { color: var(--navy); background: var(--cream); }
+.form-select:focus {
+  background-color: var(--navy-deep);
+  border-color: var(--sky);
+  color: var(--cream);
+  box-shadow: 0 0 0 .2rem rgba(121,196,232,.25);
+}
 .form-control:focus {
   background: var(--navy-deep);
   color: var(--cream);

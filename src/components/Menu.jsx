@@ -26,7 +26,7 @@ export default function Menu() {
         return prev.map((i) => i.nombre === a.nombre && i.tipo === tipo ? { ...i, qty: i.qty + 1 } : i)
       }
       const precio = tipo === 'orden' ? 245 : 160
-      return [...prev, { nombre: a.nombre, emoji: a.emoji, tipo, precio, qty: 1, nota: '' }]
+      return [...prev, { nombre: a.nombre, emoji: a.emoji, tipo, precio, qty: 1, nota: '', picor: 'medio' }]
     })
     setAgregado(`${a.nombre}-${tipo}`)
     setTimeout(() => setAgregado(null), 1600)
@@ -42,12 +42,16 @@ export default function Menu() {
     setCart((prev) => prev.map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, nota } : i))
   }
 
+  const setPicor = (nombre, tipo, picor) => {
+    setCart((prev) => prev.map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, picor } : i))
+  }
+
   const quitar = (nombre, tipo) => setCart((prev) => prev.filter((i) => !(i.nombre === nombre && i.tipo === tipo)))
 
   const enviarPedido = () => {
     if (cart.length === 0) return
     const lineas = cart
-      .map((i) => `• ${i.qty}x Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'}) — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`)
+      .map((i) => `• ${i.qty}x Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'}) — Picor: ${i.picor || 'medio'} — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`)
       .join('\n')
     const total = cart.reduce((sum, i) => sum + i.precio * i.qty, 0)
     const texto = encodeURIComponent(
@@ -133,13 +137,21 @@ export default function Menu() {
                     <span>{i.qty}</span>
                     <button className="btn btn-sm btn-outline-light ms-1" onClick={() => cambiarQty(i.nombre, i.tipo, 1)}>+</button>
                   </div>
-                  <div className="col-8 col-md-3 text-md-center"><strong style={{ color: '#79c4e8' }}>${(i.precio * i.qty).toFixed(0)}</strong></div>
-                  <div className="col-12 col-md-3">
-                    <input className="form-control form-control-sm" placeholder="Especificación, ej. sin cebolla"
+                  <div className="col-8 col-md-3">
+                    <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
+                      onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
+                      <option value="bajo">Picor: Bajo</option>
+                      <option value="medio">Picor: Medio</option>
+                      <option value="alto">Picor: Alto</option>
+                    </select>
+                  </div>
+                  <div className="col-8 col-md-2 text-md-center"><strong style={{ color: '#79c4e8' }}>${(i.precio * i.qty).toFixed(0)}</strong></div>
+                  <div className="col-12 col-md-2">
+                    <input className="form-control form-control-sm" placeholder="Ej. sin cebolla"
                       value={i.nota} onChange={(e) => setNota(i.nombre, i.tipo, e.target.value)} />
                   </div>
-                  <div className="col-12 col-md-1 text-end">
-                    <button className="btn btn-sm btn-danger" onClick={() => quitar(i.nombre, i.tipo)}>✕</button>
+                  <div className="col-4 col-md-12 text-md-end mt-1">
+                    <button className="btn btn-sm btn-danger" onClick={() => quitar(i.nombre, i.tipo)}>✕ Quitar</button>
                   </div>
                 </div>
               ))}
