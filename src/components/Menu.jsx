@@ -24,6 +24,14 @@ const ICONOS = {
       <path d="M16.8 9.6c-.6-1-1.5-1.7-2.6-2" />
     </>
   ),
+  // Salsa en frasco con gotero
+  salsa: (
+    <>
+      <path d="M13 4.5h6" />
+      <path d="M14.2 4.5v2.8c0 .9-.6 1.5-1.4 2.1-1.5 1.2-2.6 2.7-2.6 4.8v9.3c0 1.9 1.5 3.5 3.4 3.5h2.8c1.9 0 3.4-1.6 3.4-3.5v-9.3c0-2.1-1.1-3.6-2.6-4.8-.8-.6-1.4-1.2-1.4-2.1V4.5" />
+      <path d="M13.8 17.5h4.4" />
+    </>
+  ),
   // Llama ahumada con doble trazo
   llama: (
     <>
@@ -58,6 +66,16 @@ const aguachiles = [
   { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', icono: 'llama', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
 ]
 
+// Extra opcional que se puede sumar a cualquier pedido
+const EXTRA_SALSA = {
+  nombre: 'Salsa marisquera extra',
+  tipo: 'extra',
+  icono: 'salsa',
+  color: '#e8823a',
+  precio: 15,
+}
+const MAX_EXTRAS = 10
+
 export default function Menu() {
   useEffect(() => {
     M.Modal.init(document.querySelectorAll('.modal'))
@@ -81,10 +99,42 @@ export default function Menu() {
     setTimeout(() => setAgregado(null), 1600)
   }
 
+  const extrasEnCarrito = cart
+    .filter((i) => i.tipo === EXTRA_SALSA.tipo)
+    .reduce((sum, i) => sum + i.qty, 0)
+
+  const agregarSalsaExtra = () => {
+    setCart((prev) => {
+      // El limite se valida contra prev, no contra el contador del render:
+      // asi clics seguidos en el mismo tick respetan el maximo.
+      const usados = prev
+        .filter((i) => i.tipo === EXTRA_SALSA.tipo)
+        .reduce((sum, i) => sum + i.qty, 0)
+      if (usados >= MAX_EXTRAS) return prev
+
+      const existe = prev.find((i) => i.tipo === EXTRA_SALSA.tipo)
+      if (existe) {
+        return prev.map((i) => i.tipo === EXTRA_SALSA.tipo ? { ...i, qty: i.qty + 1 } : i)
+      }
+      return [...prev, { ...EXTRA_SALSA, qty: 1, nota: '', picor: null }]
+    })
+    setAgregado(`${EXTRA_SALSA.nombre}-extra`)
+    setTimeout(() => setAgregado(null), 1600)
+  }
+
   const cambiarQty = (nombre, tipo, delta) => {
-    setCart((prev) => prev
-      .map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, qty: i.qty + delta } : i)
-      .filter((i) => i.qty > 0))
+    setCart((prev) => {
+      // No dejar pasar de 10 unidades de salsa extra
+      if (tipo === EXTRA_SALSA.tipo && delta > 0) {
+        const usados = prev
+          .filter((i) => i.tipo === EXTRA_SALSA.tipo)
+          .reduce((sum, i) => sum + i.qty, 0)
+        if (usados >= MAX_EXTRAS) return prev
+      }
+      return prev
+        .map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, qty: i.qty + delta } : i)
+        .filter((i) => i.qty > 0)
+    })
   }
 
   const setNota = (nombre, tipo, nota) => {
@@ -100,7 +150,14 @@ export default function Menu() {
   const enviarPedido = () => {
     if (cart.length === 0) return
     const lineas = cart
-      .map((i) => `• ${i.qty}x Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'}) — Picor: ${i.picor || 'medio'} — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`)
+      .map((i) => {
+        const etiqueta =
+          i.tipo === 'extra'
+            ? i.nombre
+            : `Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'})`
+        const picor = i.tipo === 'extra' ? '' : ` — Picor: ${i.picor || 'medio'}`
+        return `• ${i.qty}x ${etiqueta}${picor} — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`
+      })
       .join('\n')
     const total = cart.reduce((sum, i) => sum + i.precio * i.qty, 0)
     const texto = encodeURIComponent(
@@ -149,6 +206,34 @@ export default function Menu() {
           Tú decides qué tan bravío lo quieres 🌶️
         </p>
 
+        {/* ---------- Extras ---------- */}
+        <div className="extras-box mt-4">
+          <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div className="d-flex align-items-center gap-3">
+              <span className="extras-icon">
+                <IconoAguachile tipo={EXTRA_SALSA.icono} color={EXTRA_SALSA.color} />
+              </span>
+              <div>
+                <strong style={{ color: 'var(--cream)' }}>¿Want más salsa marisquera?</strong>
+                <br />
+                <small style={{ color: 'rgba(246,241,231,.7)' }}>
+                  Extra de la casa · $15 c/u · máximo {MAX_EXTRAS} por pedido
+                </small>
+              </div>
+            </div>
+            <div className="d-flex align-items-center gap-2">
+              <span className="extras-contador">{extrasEnCarrito}/{MAX_EXTRAS}</span>
+              <button
+                className="btn-agregar btn-extras"
+                onClick={agregarSalsaExtra}
+                disabled={extrasEnCarrito >= MAX_EXTRAS}
+              >
+                {extrasEnCarrito >= MAX_EXTRAS ? 'Máximo alcanzado' : `+ Agregar salsa extra $${EXTRA_SALSA.precio}`}
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="prices-box mt-4">
           <h3 className="text-center serif">PRECIOS</h3>
           <div className="row text-center mt-4">
@@ -186,7 +271,14 @@ export default function Menu() {
                     <span style={{ flex: '0 0 34px', display: 'inline-flex' }}>
                       <IconoAguachile tipo={i.icono} color={i.color} />
                     </span>
-                    <span><strong>Aguachile {i.nombre}</strong><br /><small style={{ color: '#79c4e8' }}>{i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — ${i.precio} c/u</small></span>
+                    <span>
+                      <strong>{i.tipo === 'extra' ? i.nombre : `Aguachile ${i.nombre}`}</strong><br />
+                      <small style={{ color: '#79c4e8' }}>
+                        {i.tipo === 'extra'
+                          ? `Extra — $${i.precio} c/u`
+                          : `${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — $${i.precio} c/u`}
+                      </small>
+                    </span>
                   </div>
                   <div className="col-4 col-md-2">
                     <button className="btn btn-sm btn-outline-light me-1" onClick={() => cambiarQty(i.nombre, i.tipo, -1)}>−</button>
@@ -194,12 +286,16 @@ export default function Menu() {
                     <button className="btn btn-sm btn-outline-light ms-1" onClick={() => cambiarQty(i.nombre, i.tipo, 1)}>+</button>
                   </div>
                   <div className="col-8 col-md-3">
-                    <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
-                      onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
-                      <option value="bajo">Picor: Bajo</option>
-                      <option value="medio">Picor: Medio</option>
-                      <option value="alto">Picor: Alto</option>
-                    </select>
+                    {i.tipo === 'extra' ? (
+                      <small style={{ color: 'rgba(246,241,231,.55)' }}>Sin picor</small>
+                    ) : (
+                      <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
+                        onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
+                        <option value="bajo">Picor: Bajo</option>
+                        <option value="medio">Picor: Medio</option>
+                        <option value="alto">Picor: Alto</option>
+                      </select>
+                    )}
                   </div>
                   <div className="col-8 col-md-2 text-md-center"><strong style={{ color: '#79c4e8' }}>${(i.precio * i.qty).toFixed(0)}</strong></div>
                   <div className="col-12 col-md-2">
