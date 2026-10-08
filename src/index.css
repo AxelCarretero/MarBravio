@@ -283,16 +283,34 @@ section { padding: 80px 0; }
   background: var(--cream);
   color: var(--navy);
   border-radius: 16px;
-  padding: 32px 22px;
+  padding: 32px 24px;
   height: 100%;
   text-align: center;
   transition: transform .3s, box-shadow .3s;
   border-top: 4px solid var(--orange);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .servicio-card:hover { transform: translateY(-8px); box-shadow: 0 14px 30px rgba(0,0,0,.4); }
-.servicio-card .material-icons { font-size: 44px; color: var(--orange); }
-.servicio-card h3 { font-size: 1.25rem; margin-top: 14px; }
-.servicio-card p { color: #31465e; font-size: .93rem; }
+.servicio-card .material-icons {
+  font-size: 44px;
+  color: var(--orange);
+  flex: 0 0 44px;
+  line-height: 44px;
+}
+.servicio-card h3 {
+  font-size: 1.25rem;
+  margin: 14px 0 8px;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+}
+.servicio-card p {
+  color: #31465e;
+  font-size: .93rem;
+  margin: 0;
+}
 
 /* ---------- Contacto ---------- */
 .contacto-box {

@@ -18,7 +18,7 @@ export default function Servicios() {
         <div className="divider-line"></div>
         <div className="row g-4">
           {servicios.map((s) => (
-            <div className="col-12 col-sm-6 col-lg-3" key={s.titulo}>
+            <div className="col-12 col-sm-6 col-lg-4" key={s.titulo}>
               <div className="servicio-card reveal">
                 <span className="material-icons">{s.icon}</span>
                 <h3>{s.titulo}</h3>
