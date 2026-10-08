@@ -74,7 +74,6 @@ const EXTRA_SALSA = {
   color: '#e8823a',
   precio: 15,
 }
-const MAX_EXTRAS = 10
 
 export default function Menu() {
   useEffect(() => {
@@ -105,13 +104,6 @@ export default function Menu() {
 
   const agregarSalsaExtra = () => {
     setCart((prev) => {
-      // El limite se valida contra prev, no contra el contador del render:
-      // asi clics seguidos en el mismo tick respetan el maximo.
-      const usados = prev
-        .filter((i) => i.tipo === EXTRA_SALSA.tipo)
-        .reduce((sum, i) => sum + i.qty, 0)
-      if (usados >= MAX_EXTRAS) return prev
-
       const existe = prev.find((i) => i.tipo === EXTRA_SALSA.tipo)
       if (existe) {
         return prev.map((i) => i.tipo === EXTRA_SALSA.tipo ? { ...i, qty: i.qty + 1 } : i)
@@ -123,18 +115,9 @@ export default function Menu() {
   }
 
   const cambiarQty = (nombre, tipo, delta) => {
-    setCart((prev) => {
-      // No dejar pasar de 10 unidades de salsa extra
-      if (tipo === EXTRA_SALSA.tipo && delta > 0) {
-        const usados = prev
-          .filter((i) => i.tipo === EXTRA_SALSA.tipo)
-          .reduce((sum, i) => sum + i.qty, 0)
-        if (usados >= MAX_EXTRAS) return prev
-      }
-      return prev
-        .map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, qty: i.qty + delta } : i)
-        .filter((i) => i.qty > 0)
-    })
+    setCart((prev) => prev
+      .map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, qty: i.qty + delta } : i)
+      .filter((i) => i.qty > 0))
   }
 
   const setNota = (nombre, tipo, nota) => {
@@ -242,21 +225,17 @@ export default function Menu() {
                   <IconoAguachile tipo={EXTRA_SALSA.icono} color={EXTRA_SALSA.color} />
                 </span>
                 <div>
-                  <strong style={{ color: 'var(--cream)' }}>¿Want más salsa marisquera?</strong>
+                  <strong style={{ color: 'var(--cream)' }}>¿Quieres más salsa marisquera?</strong>
                   <br />
                   <small style={{ color: 'rgba(246,241,231,.7)' }}>
-                    Extra de la casa · ${EXTRA_SALSA.precio} c/u · máximo {MAX_EXTRAS} por pedido
+                    Extra de la casa · ${EXTRA_SALSA.precio} c/u · agrega las que quieras
                   </small>
                 </div>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <span className="extras-contador">{extrasEnCarrito}/{MAX_EXTRAS}</span>
-                <button
-                  className="btn-extras"
-                  onClick={agregarSalsaExtra}
-                  disabled={extrasEnCarrito >= MAX_EXTRAS}
-                >
-                  {extrasEnCarrito >= MAX_EXTRAS ? 'Máximo alcanzado' : `+ Agregar salsa extra $${EXTRA_SALSA.precio}`}
+                <span className="extras-contador">{extrasEnCarrito}</span>
+                <button className="btn-extras" onClick={agregarSalsaExtra}>
+                  + Agregar salsa extra ${EXTRA_SALSA.precio}
                 </button>
               </div>
             </div>
@@ -287,7 +266,7 @@ export default function Menu() {
                   </div>
                   <div className="col-8 col-md-3">
                     {i.tipo === 'extra' ? (
-                      <small style={{ color: 'rgba(246,241,231,.55)' }}>Sin picor</small>
+                      <small style={{ color: 'rgba(246,241,231,.55)' }}>Salsa marisquera con sabor</small>
                     ) : (
                       <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
                         onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
