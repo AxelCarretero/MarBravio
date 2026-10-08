@@ -6,7 +6,7 @@ const servicios = [
   { icon: 'restaurant', titulo: 'Comer en el lugar', texto: 'Un ambiente cálido frente al mar para disfrutar nuestros aguachiles recién preparados.' },
   { icon: 'shopping_bag', titulo: 'Para llevar', texto: 'Pide desde casa, recoge en local y llévate el sabor del mar donde tú quieras.' },
   // { icon: 'room_service', titulo: 'Catering', texto: 'Llevamos MarBravio a tus eventos: bodas, fiestas y celebraciones con sazón marino.' },
-  { icon: 'delivery_dining', titulo: 'Entrega a domicilio', texto: 'Pedidos por WhatsApp con entrega rápida para que disfrutes sin moverte de casa.' },
+  { icon: 'delivery_dining', titulo: 'Entrega a domicilio', texto: 'Próximamente enables este servicio. Mientras tanto, puedes recoger tu pedido directamente en nuestro local.' },
 ]
 
 export default function Servicios() {
