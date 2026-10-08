@@ -16,6 +16,7 @@ export default function Menu() {
 
   const [cart, setCart] = useState([])
   const [notaGeneral, setNotaGeneral] = useState('')
+  const [destinatario, setDestinatario] = useState('')
   const [agregado, setAgregado] = useState(null)
 
   const agregar = (a, tipo) => {
@@ -50,7 +51,7 @@ export default function Menu() {
       .join('\n')
     const total = cart.reduce((sum, i) => sum + i.precio * i.qty, 0)
     const texto = encodeURIComponent(
-      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nMi pedido:\n${lineas}\n\nTotal: $${total}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
+      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
     )
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, '_blank')
   }
@@ -142,7 +143,13 @@ export default function Menu() {
                   </div>
                 </div>
               ))}
-              <div className="mt-3">
+              <div className="mt-3 mb-3">
+                <label className="form-label">El pedido es para...</label>
+                <input className="form-control" value={destinatario}
+                  onChange={(e) => setDestinatario(e.target.value)}
+                  placeholder="Nombre de a quién va dirigido" style={{ color: '#fff' }} />
+              </div>
+              <div>
                 <label className="form-label">¿Algo más en especial? (ej. tosti, extra salsa)</label>
                 <textarea className="form-control" rows="2" value={notaGeneral}
                   onChange={(e) => setNotaGeneral(e.target.value)}
