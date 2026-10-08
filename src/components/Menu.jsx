@@ -2,11 +2,60 @@ import React, { useEffect, useState } from 'react'
 import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
 
+// Iconos dibujados a mano con el mismo estilo de línea para que los cuatro
+// se vean de la misma familia. Cada uno toma el color de su aguachile.
+const ICONOS = {
+  // Chile: usado por Verde y Roja, solo cambia el color
+  chile: (
+    <>
+      {/* rabo */}
+      <path d="M15.5 6.5c0-1.6 1-2.8 2.6-3" />
+      {/* cuerpo curvo que se ensancha hacia abajo */}
+      <path d="M18.1 3.5c-.9 3.2-1.4 5.6-3.3 7.8-2.2 2.5-5.3 4.6-5.3 9.2a7.9 7.9 0 0 0 15.8 0c0-4-2.2-6.2-4.2-8.4-1.9-2.1-2.4-5.2-3-8.6z" />
+      {/* brillo interior */}
+      <path d="M13.6 17.5c-1 1.3-1.5 2.6-1.5 3.9" />
+    </>
+  ),
+  // Mango: cuerpo ovalado inclinado + hoja
+  mango: (
+    <>
+      <path d="M17.5 9.8c4.6.6 8 3.6 8 7.9 0 4.8-4.3 8.4-9.6 8.4-4.7 0-8.4-2.8-8.4-6.7 0-3.3 2.3-5.9 5.6-7.4 1.5-.7 3-1.4 4.4-2.2z" />
+      <path d="M17.5 9.8c.2-2.7 2.3-4.7 5.3-4.8-.2 2.7-2.3 4.7-5.3 4.8z" />
+      <path d="M16.8 9.6c-.6-1-1.5-1.7-2.6-2" />
+    </>
+  ),
+  // Llama ahumada con doble trazo
+  llama: (
+    <>
+      <path d="M16 28.5c-4.9 0-8.8-3.4-8.8-7.9 0-5.6 4.9-7.6 7.3-11.7 1.3-2.2 2.2-3.9 2.2-3.9s.6 2.6.6 5.2c0 2.2-.8 3.6-1.7 4.9 1.4-.5 2.3-1.7 2.3-3.4 2.2 2.1 6.9 5 6.9 8.9 0 4.5-3.9 7.9-8.8 7.9z" />
+      <path d="M16 28.5c-2.5 0-4.4-1.9-4.4-4.3 0-2.9 3-4 4-6.8 1 2.8 4.8 3.9 4.8 6.8 0 2.4-1.9 4.3-4.4 4.3z" />
+    </>
+  ),
+}
+
+function IconoAguachile({ tipo, color }) {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      width="44"
+      height="44"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {ICONOS[tipo]}
+    </svg>
+  )
+}
+
 const aguachiles = [
-  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', emoji: '🫑', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
-  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', emoji: '🥭', precio: 245, desc: 'Salsa de mango con un toque de habanero tatemado, limón, ajo, sal y pimienta.' },
-  { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', emoji: '🌶️', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
-  { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', emoji: '🔥', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
+  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', icono: 'chile', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
+  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', icono: 'mango', precio: 245, desc: 'Salsa de mango con un toque de habanero tatemado, limón, ajo, sal y pimienta.' },
+  { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', icono: 'chile', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
+  { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', icono: 'llama', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
 ]
 
 export default function Menu() {
@@ -26,7 +75,7 @@ export default function Menu() {
         return prev.map((i) => i.nombre === a.nombre && i.tipo === tipo ? { ...i, qty: i.qty + 1 } : i)
       }
       const precio = tipo === 'orden' ? 245 : 160
-      return [...prev, { nombre: a.nombre, emoji: a.emoji, tipo, precio, qty: 1, nota: '', picor: 'medio' }]
+      return [...prev, { nombre: a.nombre, icono: a.icono, color: a.color, tipo, precio, qty: 1, nota: '', picor: 'medio' }]
     })
     setAgregado(`${a.nombre}-${tipo}`)
     setTimeout(() => setAgregado(null), 1600)
@@ -71,7 +120,9 @@ export default function Menu() {
           {aguachiles.map((a) => (
             <div className="col-6 col-lg-3" key={a.nombre}>
               <div className="menu-card reveal" style={{ color: a.color }}>
-                <div className="icon-badge" style={{ color: a.color }}>{a.emoji}</div>
+                <div className="icon-badge" style={{ color: a.color }}>
+                  <IconoAguachile tipo={a.icono} color={a.color} />
+                </div>
                 <h3>{a.nombre}</h3>
                 <div className="nick">{a.apodo}</div>
                 <div className="serif" style={{ fontSize: '1.4rem', fontWeight: 800 }}>${a.precio}</div>
@@ -131,7 +182,12 @@ export default function Menu() {
             <>
               {cart.map((i) => (
                 <div key={i.nombre + i.tipo} className="row align-items-center g-2 mb-2">
-                  <div className="col-12 col-md-3"><strong>{i.emoji} Aguachile {i.nombre}</strong><br /><small style={{ color: '#79c4e8' }}>{i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — ${i.precio} c/u</small></div>
+                  <div className="col-12 col-md-3 d-flex align-items-center gap-2">
+                    <span style={{ flex: '0 0 34px', display: 'inline-flex' }}>
+                      <IconoAguachile tipo={i.icono} color={i.color} />
+                    </span>
+                    <span><strong>Aguachile {i.nombre}</strong><br /><small style={{ color: '#79c4e8' }}>{i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — ${i.precio} c/u</small></span>
+                  </div>
                   <div className="col-4 col-md-2">
                     <button className="btn btn-sm btn-outline-light me-1" onClick={() => cambiarQty(i.nombre, i.tipo, -1)}>−</button>
                     <span>{i.qty}</span>
