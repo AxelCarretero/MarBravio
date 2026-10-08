@@ -245,28 +245,32 @@ export default function Menu() {
           ) : (
             <>
               {cart.map((i) => (
-                <div key={i.nombre + i.tipo} className="row align-items-center g-2 mb-2">
-                  <div className="col-12 col-md-3 d-flex align-items-center gap-2">
-                    <span style={{ flex: '0 0 34px', display: 'inline-flex' }}>
+                <div key={i.nombre + i.tipo} className="cart-item">
+                  <div className="cart-item__head">
+                    <span className="cart-item__icon">
                       <IconoAguachile tipo={i.icono} color={i.color} />
                     </span>
-                    <span>
-                      <strong>{i.tipo === 'extra' ? i.nombre : `Aguachile ${i.nombre}`}</strong><br />
-                      <small style={{ color: '#79c4e8' }}>
+                    <span className="cart-item__txt">
+                      <strong>{i.tipo === 'extra' ? i.nombre : `Aguachile ${i.nombre}`}</strong>
+                      <small>
                         {i.tipo === 'extra'
                           ? `Extra — $${i.precio} c/u`
                           : `${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — $${i.precio} c/u`}
                       </small>
                     </span>
+                    <span className="cart-item__price">${(i.precio * i.qty).toFixed(0)}</span>
                   </div>
-                  <div className="col-4 col-md-2">
-                    <button className="btn btn-sm btn-outline-light me-1" onClick={() => cambiarQty(i.nombre, i.tipo, -1)}>−</button>
-                    <span>{i.qty}</span>
-                    <button className="btn btn-sm btn-outline-light ms-1" onClick={() => cambiarQty(i.nombre, i.tipo, 1)}>+</button>
+
+                  <div className="cart-item__qty">
+                    <button className="btn btn-sm btn-outline-light" onClick={() => cambiarQty(i.nombre, i.tipo, -1)}>−</button>
+                    <span className="cart-item__qty-num">{i.qty}</span>
+                    <button className="btn btn-sm btn-outline-light" onClick={() => cambiarQty(i.nombre, i.tipo, 1)}>+</button>
+                    <small className="cart-item__qty-label">cantidad</small>
                   </div>
-                  <div className="col-8 col-md-3">
+
+                  <div className="cart-item__picor">
                     {i.tipo === 'extra' ? (
-                      <small style={{ color: 'rgba(246,241,231,.55)' }}>Salsa marisquera con sabor</small>
+                      <small className="cart-item__nota-label">Salsa marisquera con sabor</small>
                     ) : (
                       <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
                         onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
@@ -276,14 +280,15 @@ export default function Menu() {
                       </select>
                     )}
                   </div>
-                  <div className="col-8 col-md-2 text-md-center"><strong style={{ color: '#79c4e8' }}>${(i.precio * i.qty).toFixed(0)}</strong></div>
-                  <div className="col-12 col-md-2">
+
+                  <div className="cart-item__nota">
                     <input className="form-control form-control-sm" placeholder="Ej. sin cebolla"
                       value={i.nota} onChange={(e) => setNota(i.nombre, i.tipo, e.target.value)} />
                   </div>
-                  <div className="col-4 col-md-12 text-md-end mt-1">
-                    <button className="btn btn-sm btn-danger" onClick={() => quitar(i.nombre, i.tipo)}>✕ Quitar</button>
-                  </div>
+
+                  <button className="btn btn-sm btn-danger cart-item__remove" onClick={() => quitar(i.nombre, i.tipo)}>
+                    ✕
+                  </button>
                 </div>
               ))}
               <div className="mt-3 mb-3">
