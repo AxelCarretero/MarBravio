@@ -77,12 +77,22 @@ const EXTRA_SALSA = {
 
 const METODOS_PAGO = [
   { id: 'Efectivo', titulo: 'Efectivo', subtitulo: 'Pagar al recibir', icono: 'payments' },
-  { id: 'Tarjeta', titulo: 'Tarjeta', subtitulo: 'Pago con tarjeta', icono: 'credit_card' },
+  { id: 'Transferencia', titulo: 'Transferencia', subtitulo: 'Transferencia bancaria', icono: 'account_balance' },
+  { id: 'Mercado Pago', titulo: 'Mercado Pago', subtitulo: 'Pago con Mercado Pago', icono: 'shopping_bag' },
+]
+
+// Datos tomados de la imagen de la referencia (solo la informacion, sin su diseno)
+const DATOS_TRANSFERENCIA = [
+  { etiqueta: 'Banco', valor: 'BBVA' },
+  { etiqueta: 'Titular', valor: 'Sergio Javier Herrera Pinto' },
+  { etiqueta: 'Cuenta', valor: '153 885 9383' },
+  { etiqueta: 'CLABE', valor: '012 320 015388859383 7' },
 ]
 
 const MENSAJES_PAGO = {
   Efectivo: 'Pagarás en efectivo al recibir tu pedido.',
-  Tarjeta: 'Elegiste tarjeta. Confirma el pago mediante el método habilitado por el negocio.',
+  Transferencia: 'Realiza tu transferencia y envíanos el comprobante por este mismo WhatsApp.',
+  'Mercado Pago': 'Elegiste Mercado Pago. Te enviaremos el link de pago para completar tu pedido.',
 }
 
 export default function Menu() {
@@ -94,7 +104,30 @@ export default function Menu() {
   const [notaGeneral, setNotaGeneral] = useState('')
   const [destinatario, setDestinatario] = useState('')
   const [metodoPago, setMetodoPago] = useState(null)
+  const [copiado, setCopiado] = useState(null)
   const [agregado, setAgregado] = useState(null)
+
+  const copiar = async (texto, campo) => {
+    // Confirmacion inmediata: no hacemos esperar al portapapeles al usuario.
+    setCopiado(campo)
+    setTimeout(() => setCopiado(null), 1800)
+    try {
+      if (!navigator.clipboard || !window.isSecureContext) throw new Error('sin API de portapapeles')
+      await navigator.clipboard.writeText(texto)
+    } catch {
+      // Respaldo: seleccionamos el texto para que el cliente lo copie a mano.
+      const area = document.createElement('textarea')
+      area.value = texto
+      area.setAttribute('readonly', '')
+      area.style.position = 'fixed'
+      area.style.top = '-1000px'
+      document.body.appendChild(area)
+      area.select()
+      area.setSelectionRange(0, texto.length)
+      try { document.execCommand('copy') } catch { /* noop */ }
+      document.body.removeChild(area)
+    }
+  }
 
   const mensajePago = metodoPago
     ? MENSAJES_PAGO[metodoPago]
@@ -158,8 +191,12 @@ export default function Menu() {
       })
       .join('\n')
     const total = cart.reduce((sum, i) => sum + i.precio * i.qty, 0)
+    const recordatorioPago =
+      metodoPago === 'Transferencia'
+        ? '\n\nYa hice mi transferencia, aquí te envío mi comprobante.'
+        : ''
     const texto = encodeURIComponent(
-      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}\nMétodo de pago: ${metodoPago || 'sin definir'}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
+      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}\nMétodo de pago: ${metodoPago || 'sin definir'}${recordatorioPago}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
     )
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, '_blank')
   }
@@ -344,6 +381,41 @@ export default function Menu() {
                   ))}
                 </div>
                 <p id="mensaje-pago">{mensajePago}</p>
+
+                {metodoPago === 'Transferencia' && (
+                  <div className="datos-transferencia">
+                    <p className="datos-transferencia__titulo">
+                      <span className="material-icons">account_balance</span>
+                      Datos para tu transferencia
+                    </p>
+                    {DATOS_TRANSFERENCIA.map((d) => (
+                      <div className="dato-transferencia" key={d.etiqueta}>
+                        <span className="dato-transferencia__etiqueta">{d.etiqueta}</span>
+                        <span className="dato-transferencia__valor">{d.valor}</span>
+                        <button
+                          type="button"
+                          className="btn-copiar"
+                          onClick={() => copiar(d.valor, d.etiqueta)}
+                          aria-label={`Copiar ${d.etiqueta}`}
+                        >
+                          <span className="material-icons">
+                            {copiado === d.etiqueta ? 'check' : 'content_copy'}
+                          </span>
+                        </button>
+                      </div>
+                    ))}
+                    <div className="comprobante-aviso">
+                      <span className="material-icons">photo_camera</span>
+                      <div>
+                        <strong>Envíanos tu comprobante</strong>
+                        <p>
+                          Al terminar tu transferencia, envía la foto o el comprobante en PDF por este
+                          mismo WhatsApp para confirmar tu pedido.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <button className="btn btn-whatsapp px-4 py-2 mt-3 w-100" onClick={enviarPedido}>

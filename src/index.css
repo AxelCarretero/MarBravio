@@ -488,10 +488,93 @@ section { padding: 80px 0; }
   min-height: 1.2em;
 }
 
+/* Tres metodos de pago: 3 columnas en escritorio, 1 en movil */
+@media (min-width: 576px) {
+  .opciones-pago { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Datos de transferencia ---------- */
+.datos-transferencia {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(121, 196, 232, .3);
+  border-radius: 14px;
+  background: rgba(6, 23, 40, .5);
+  text-align: left;
+}
+.datos-transferencia__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+}
+.datos-transferencia__titulo .material-icons { color: var(--orange); }
+.dato-transferencia {
+  display: grid;
+  grid-template-columns: 90px 1fr 36px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(121, 196, 232, .14);
+}
+.dato-transferencia:first-of-type { border-top: none; }
+.dato-transferencia__etiqueta {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--sky);
+}
+.dato-transferencia__valor {
+  color: var(--cream);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.btn-copiar {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(121, 196, 232, .3);
+  background: transparent;
+  color: var(--sky);
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.btn-copiar:hover {
+  background: var(--sky);
+  color: var(--navy-deep);
+  border-color: var(--sky);
+}
+.btn-copiar .material-icons { font-size: 17px; }
+
+.comprobante-aviso {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(232, 130, 58, .5);
+  background: rgba(232, 130, 58, .08);
+}
+.comprobante-aviso .material-icons { color: var(--orange); }
+.comprobante-aviso strong { color: var(--cream); display: block; margin-bottom: 4px; }
+.comprobante-aviso p {
+  margin: 0;
+  font-size: .85rem;
+  color: rgba(246, 241, 231, .8);
+}
+
 @media (max-width: 360px) {
   .opciones-pago { gap: 8px; }
   .opcion-pago { min-height: 120px; }
   .opcion-pago strong { font-size: 1rem; }
+  .dato-transferencia { grid-template-columns: 1fr 36px; }
+  .dato-transferencia__etiqueta { grid-column: 1 / -1; }
 }
 
 /* ---------- Extras ---------- */
