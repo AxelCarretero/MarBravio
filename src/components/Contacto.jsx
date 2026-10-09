@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { WHATSAPP_NUMBER } from '../App'
+import BotonWhatsApp from './BotonWhatsApp'
 
 export default function Contacto() {
   const [form, setForm] = useState({ nombre: '', telefono: '', mensaje: '' })
@@ -72,7 +73,7 @@ export default function Contacto() {
                       onChange={(e) => setForm({ ...form, mensaje: e.target.value })}></textarea>
                   </div>
                   <div className="col-12">
-                    <button className="btn btn-whatsapp px-4 py-2" type="submit">Enviar por WhatsApp</button>
+                    <BotonWhatsApp type="submit" onClick={enviar} texto="Enviar por WhatsApp" />
                   </div>
                 </div>
               </form>
