@@ -276,6 +276,27 @@ section { padding: 80px 0; }
 .prices-box h3 { letter-spacing: 4px; color: var(--cream); }
 .price-col h4 { font-family: 'Playfair Display', serif; color: var(--cream); letter-spacing: 2px; font-size: 1.05rem; }
 .price-col .amount { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--cream); }
+.btn-tosti {
+  margin-top: 14px;
+  padding: 10px 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 22px;
+  background: transparent;
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: .82rem;
+  letter-spacing: .5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform .2s, background .25s, border-color .25s;
+}
+.btn-tosti:hover { background: rgba(242, 178, 62, .15); transform: translateY(-2px); }
+.btn-tosti.agregado {
+  background: #25d366;
+  border-color: #25d366;
+  color: #fff;
+  animation: agregarPop .45s ease;
+}
 .price-col + .price-col { border-left: 1px solid rgba(121,196,232,.3); }
 
 /* ---------- Servicios ---------- */

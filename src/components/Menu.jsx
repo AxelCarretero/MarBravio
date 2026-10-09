@@ -24,6 +24,15 @@ const ICONOS = {
       <path d="M16.8 9.6c-.6-1-1.5-1.7-2.6-2" />
     </>
   ),
+  // Tosti: pan tostado con relleno
+  tosti: (
+    <>
+      <path d="M6 13.5h20a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z" />
+      <path d="M4.6 13.2c-1.5-.6-2.4-1.9-2.4-3.4 0-2.2 2.4-4 6.6-4 2 0 3.9.4 5.3 1.1" />
+      <path d="M16 9.4c1.7-1.3 4-2 6.2-1.6 1.3.2 2.3 1 2.6 2 .5 1.6-.9 3-3.4 3.2" />
+      <path d="M7 17.5h18" />
+    </>
+  ),
   // Salsa en frasco con gotero
   salsa: (
     <>
@@ -73,6 +82,15 @@ const EXTRA_SALSA = {
   icono: 'salsa',
   color: '#e8823a',
   precio: 15,
+}
+
+// Tosti de aguachiles: acompanamiento que se agrega directo desde los precios
+const TOSTI = {
+  nombre: 'Tosti de aguachiles',
+  tipo: 'tosti',
+  icono: 'tosti',
+  color: '#f2b23e',
+  precio: 180,
 }
 
 const METODOS_PAGO = [
@@ -162,6 +180,18 @@ export default function Menu() {
     setTimeout(() => setAgregado(null), 1600)
   }
 
+  const agregarTosti = () => {
+    setCart((prev) => {
+      const existe = prev.find((i) => i.tipo === TOSTI.tipo)
+      if (existe) {
+        return prev.map((i) => i.tipo === TOSTI.tipo ? { ...i, qty: i.qty + 1 } : i)
+      }
+      return [...prev, { ...TOSTI, qty: 1, nota: '' }]
+    })
+    setAgregado('tosti-tosti')
+    setTimeout(() => setAgregado(null), 1600)
+  }
+
   const cambiarQty = (nombre, tipo, delta) => {
     setCart((prev) => prev
       .map((i) => i.nombre === nombre && i.tipo === tipo ? { ...i, qty: i.qty + delta } : i)
@@ -182,11 +212,11 @@ export default function Menu() {
     if (cart.length === 0) return
     const lineas = cart
       .map((i) => {
-        const etiqueta =
-          i.tipo === 'extra'
-            ? i.nombre
-            : `Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'})`
-        const picor = i.tipo === 'extra' ? '' : ` — Picor: ${i.picor || 'medio'}`
+        const sinFicha = i.tipo === 'extra' || i.tipo === 'tosti'
+        const etiqueta = sinFicha
+          ? i.nombre
+          : `Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'})`
+        const picor = sinFicha ? '' : ` — Picor: ${i.picor || 'medio'}`
         return `• ${i.qty}x ${etiqueta}${picor} — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`
       })
       .join('\n')
@@ -253,8 +283,14 @@ export default function Menu() {
               <div className="amount">$160</div>
             </div>
             <div className="col-md-4 price-col">
-              <h4>TOSTI</h4>
-              <div className="amount">$180</div>
+              <h4>TOSTI AGUACHILES</h4>
+              <div className="amount">${TOSTI.precio}</div>
+              <button
+                className={`btn-agregar btn-tosti ${agregado === 'tosti-tosti' ? 'agregado' : ''}`}
+                onClick={agregarTosti}
+              >
+                {agregado === 'tosti-tosti' ? '✓ Agregado' : '+ Agregar al pedido'}
+              </button>
             </div>
           </div>
         </div>
@@ -303,11 +339,13 @@ export default function Menu() {
                       <IconoAguachile tipo={i.icono} color={i.color} />
                     </span>
                     <span className="cart-item__txt">
-                      <strong>{i.tipo === 'extra' ? i.nombre : `Aguachile ${i.nombre}`}</strong>
+                      <strong>{i.tipo === 'orden' || i.tipo === 'media' ? `Aguachile ${i.nombre}` : i.nombre}</strong>
                       <small>
                         {i.tipo === 'extra'
                           ? `Extra — $${i.precio} c/u`
-                          : `${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — $${i.precio} c/u`}
+                          : i.tipo === 'tosti'
+                            ? `Acompañamiento — $${i.precio} c/u`
+                            : `${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'} — $${i.precio} c/u`}
                       </small>
                     </span>
                     <span className="cart-item__price">${(i.precio * i.qty).toFixed(0)}</span>
@@ -323,6 +361,8 @@ export default function Menu() {
                   <div className="cart-item__picor">
                     {i.tipo === 'extra' ? (
                       <small className="cart-item__nota-label">Salsa marisquera con sabor</small>
+                    ) : i.tipo === 'tosti' ? (
+                      <small className="cart-item__nota-label">Acompañamiento</small>
                     ) : (
                       <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
                         onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
