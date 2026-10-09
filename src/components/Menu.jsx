@@ -51,7 +51,12 @@ const ICONOS = {
   ),
 }
 
-function IconoAguachile({ tipo, color }) {
+function IconoAguachile({ tipo, color, imagen, alt }) {
+  // Los aguachiles usan las imagenes oficiales recortadas (con fondo transparente);
+  // el tosti y la salsa siguen usando los iconos de linea.
+  if (imagen) {
+    return <img src={imagen} alt={alt || ''} loading="lazy" />
+  }
   return (
     <svg
       viewBox="0 0 32 32"
@@ -70,10 +75,10 @@ function IconoAguachile({ tipo, color }) {
 }
 
 const aguachiles = [
-  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', icono: 'chile', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
-  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', icono: 'mango', precio: 245, desc: 'Salsa de mango con un toque de habanero tatemado, limón, ajo, sal y pimienta.' },
-  { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', icono: 'chile', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
-  { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', icono: 'llama', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
+  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', imagen: '/assets/aguachil-verde.png', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
+  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', imagen: '/assets/aguachil-tropical.png', precio: 245, desc: 'Salsa de mango con un toque de habanero tatemado, limón, ajo, sal y pimienta.' },
+  { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', imagen: '/assets/aguachil-roja.png', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
+  { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', imagen: '/assets/aguachil-negro.png', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
 ]
 
 // Extra opcional que se puede sumar a cualquier pedido
@@ -167,7 +172,7 @@ export default function Menu() {
         return prev.map((i) => i.nombre === a.nombre && i.tipo === tipo ? { ...i, qty: i.qty + 1 } : i)
       }
       const precio = tipo === 'orden' ? 245 : 160
-      return [...prev, { nombre: a.nombre, icono: a.icono, color: a.color, tipo, precio, qty: 1, nota: '', picor: 'medio' }]
+      return [...prev, { nombre: a.nombre, imagen: a.imagen, icono: a.icono, color: a.color, tipo, precio, qty: 1, nota: '', picor: 'medio' }]
     })
     setAgregado(`${a.nombre}-${tipo}`)
     setTimeout(() => setAgregado(null), 1600)
@@ -254,7 +259,7 @@ export default function Menu() {
             <div className="col-6 col-lg-3" key={a.nombre}>
               <div className="menu-card reveal" style={{ color: a.color }}>
                 <div className="icon-badge" style={{ color: a.color }}>
-                  <IconoAguachile tipo={a.icono} color={a.color} />
+                  <IconoAguachile imagen={a.imagen} color={a.color} alt={`Aguachile ${a.nombre}`} />
                 </div>
                 <h3>{a.nombre}</h3>
                 <div className="nick">{a.apodo}</div>
@@ -361,7 +366,7 @@ export default function Menu() {
                 <div key={i.nombre + i.tipo} className="cart-item">
                   <div className="cart-item__head">
                     <span className="cart-item__icon">
-                      <IconoAguachile tipo={i.icono} color={i.color} />
+                      <IconoAguachile imagen={i.imagen} tipo={i.icono} color={i.color} alt="" />
                     </span>
                     <span className="cart-item__txt">
                       <strong>{i.tipo === 'orden' || i.tipo === 'media' ? `Aguachile ${i.nombre}` : i.nombre}</strong>
