@@ -716,6 +716,44 @@ section { padding: 80px 0; }
   .dato-transferencia__etiqueta { grid-column: 1 / -1; }
 }
 
+/* ---------- Horario de pedidos ---------- */
+.horario-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 26px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid;
+}
+.horario-banner .material-icons { flex: 0 0 26px; }
+.horario-banner strong { display: block; }
+.horario-banner p { margin: 2px 0 0; font-size: .85rem; }
+.horario-banner.abierto {
+  border-color: rgba(37, 211, 102, .5);
+  background: rgba(37, 211, 102, .09);
+  color: var(--cream);
+}
+.horario-banner.abierto .material-icons { color: #25d366; }
+.horario-banner.cerrado {
+  border-color: rgba(232, 130, 58, .5);
+  background: rgba(232, 130, 58, .09);
+  color: var(--cream);
+}
+.horario-banner.cerrado .material-icons { color: var(--orange); }
+
+/* Botones de pedido deshabilitados */
+.btn-agregar:disabled,
+.btn-extras:disabled,
+.btn-enviar-pedido:disabled,
+.btn-tosti:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+  filter: grayscale(.55);
+  transform: none !important;
+  box-shadow: none;
+}
+
 /* ---------- Extras ---------- */
 .extras-box {
   border: 1px dashed rgba(232, 130, 58, 0.55);

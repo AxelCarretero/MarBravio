@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
+import { estadoHorario } from '../horario'
 
 // Iconos dibujados a mano con el mismo estilo de línea para que los cuatro
 // se vean de la misma familia. Cada uno toma el color de su aguachile.
@@ -114,9 +115,16 @@ const MENSAJES_PAGO = {
 }
 
 export default function Menu() {
+  const [horario, setHorario] = useState(() => estadoHorario())
+
   useEffect(() => {
     M.Modal.init(document.querySelectorAll('.modal'))
+    // Revisamos el horario cada minuto para abrir/cerrar solo
+    const timer = setInterval(() => setHorario(estadoHorario()), 60 * 1000)
+    return () => clearInterval(timer)
   }, [])
+
+  const pedidosCerrados = horario.aplica && !horario.abierto
 
   const [cart, setCart] = useState([])
   const [notaGeneral, setNotaGeneral] = useState('')
@@ -152,6 +160,7 @@ export default function Menu() {
     : 'Elige tu método de pago para continuar'
 
   const agregar = (a, tipo) => {
+    if (pedidosCerrados) return
     setCart((prev) => {
       const existe = prev.find((i) => i.nombre === a.nombre && i.tipo === tipo)
       if (existe) {
@@ -169,6 +178,7 @@ export default function Menu() {
     .reduce((sum, i) => sum + i.qty, 0)
 
   const agregarSalsaExtra = () => {
+    if (pedidosCerrados) return
     setCart((prev) => {
       const existe = prev.find((i) => i.tipo === EXTRA_SALSA.tipo)
       if (existe) {
@@ -181,6 +191,7 @@ export default function Menu() {
   }
 
   const agregarTosti = () => {
+    if (pedidosCerrados) return
     setCart((prev) => {
       const existe = prev.find((i) => i.tipo === TOSTI.tipo)
       if (existe) {
@@ -209,7 +220,7 @@ export default function Menu() {
   const quitar = (nombre, tipo) => setCart((prev) => prev.filter((i) => !(i.nombre === nombre && i.tipo === tipo)))
 
   const enviarPedido = () => {
-    if (cart.length === 0) return
+    if (cart.length === 0 || pedidosCerrados) return
     const lineas = cart
       .map((i) => {
         const sinFicha = i.tipo === 'extra' || i.tipo === 'tosti'
@@ -251,11 +262,13 @@ export default function Menu() {
                 <p className="mt-2">{a.desc}</p>
                 <button className={`btn-agregar ${agregado === a.nombre + '-orden' ? 'agregado' : ''}`}
                   onClick={() => agregar(a, 'orden')}
+                  disabled={pedidosCerrados}
                   style={{ background: agregado === a.nombre + '-orden' ? '#25d366' : a.color }}>
                   {agregado === a.nombre + '-orden' ? '✓ Orden agregada' : '+ Orden $245'}
                 </button>
                 <button className={`btn-agregar ${agregado === a.nombre + '-media' ? 'agregado' : ''}`}
                   onClick={() => agregar(a, 'media')}
+                  disabled={pedidosCerrados}
                   style={{ background: agregado === a.nombre + '-media' ? '#25d366' : 'transparent', border: `2px solid ${a.color}`, color: agregado === a.nombre + '-media' ? '#fff' : a.color }}>
                   {agregado === a.nombre + '-media' ? '✓ ½ Orden agregada' : '+ ½ Orden $160'}
                 </button>
@@ -271,6 +284,23 @@ export default function Menu() {
           Tú decides qué tan bravío lo quieres 🌶️
         </p>
 
+        {horario.aplica && (
+          <div className={`horario-banner ${horario.abierto ? 'abierto' : 'cerrado'}`} role="status">
+            <span className="material-icons">{horario.abierto ? 'storefront' : 'schedule'}</span>
+            <div>
+              <strong>{horario.mensaje}</strong>
+              {horario.abierto ? (
+                <p>{horario.detalle}</p>
+              ) : (
+                <p>
+                  {horario.detalle}
+                  {horario.proxima ? ` ${horario.proxima}` : ''}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="prices-box mt-4">
           <h3 className="aguachiles-titulo">AGUACHILES</h3>
 
@@ -283,6 +313,7 @@ export default function Menu() {
             <button
               className={`btn-agregar btn-tosti ${agregado === 'tosti-tosti' ? 'agregado' : ''}`}
               onClick={agregarTosti}
+              disabled={pedidosCerrados}
             >
               {agregado === 'tosti-tosti' ? '✓ Agregado' : '+ Agregar al pedido'}
             </button>
@@ -316,7 +347,7 @@ export default function Menu() {
               </div>
               <div className="d-flex align-items-center gap-2">
                 <span className="extras-contador">{extrasEnCarrito}</span>
-                <button className="btn-extras" onClick={agregarSalsaExtra}>
+                <button className="btn-extras" onClick={agregarSalsaExtra} disabled={pedidosCerrados}>
                   + Agregar salsa extra ${EXTRA_SALSA.precio}
                 </button>
               </div>
@@ -454,7 +485,7 @@ export default function Menu() {
                 )}
               </div>
 
-              <button type="button" className="btn-enviar-pedido" onClick={enviarPedido}>
+              <button type="button" className="btn-enviar-pedido" onClick={enviarPedido} disabled={pedidosCerrados}>
                 <svg viewBox="0 0 32 32" aria-hidden="true">
                   <path d="M16.003 3C9.373 3 4 8.373 4 15.003c0 2.385.697 4.606 1.9 6.478L4 29l7.72-1.87a11.93 11.93 0 0 0 4.283.77h.003C22.633 27.9 28 22.527 28 15.897 28 9.267 22.633 3 16.003 3zm0 21.62a9.9 9.9 0 0 1-5.04-1.376l-.362-.214-4.578 1.108 1.22-4.46-.235-.375a9.83 9.83 0 0 1-1.51-5.3c0-5.443 4.43-9.867 9.878-9.867 5.444 0 9.868 4.424 9.868 9.867 0 5.443-4.424 9.87-9.868 9.87v-.36zm5.41-7.39c-.297-.148-1.757-.867-2.03-.966-.272-.1-.47-.148-.67.148-.198.297-.768.966-.94 1.165-.173.198-.347.223-.644.074-.297-.148-1.255-.463-2.39-1.475-.883-.787-1.48-1.762-1.654-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.148-.174.198-.298.297-.497.1-.198.05-.372-.025-.52-.074-.148-.669-1.613-.917-2.21-.241-.58-.487-.502-.67-.511l-.57-.01c-.198 0-.521.074-.794.372-.272.297-1.04 1.017-1.04 2.48s1.066 2.876 1.215 3.075c.148.198 2.1 3.206 5.087 4.495.711.307 1.265.49 1.697.627.713.227 1.362.195 1.875.118.572-.085 1.757-.718 2.005-1.411.248-.694.248-1.29.173-1.412-.074-.124-.272-.198-.57-.347z" />
                 </svg>
