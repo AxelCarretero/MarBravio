@@ -13,8 +13,12 @@ export default function Hero() {
         <p className="lead mt-3">FRESCO &nbsp;•&nbsp; CALIDAD &nbsp;•&nbsp; SABOR</p>
         <div className="mt-4 d-flex justify-content-center gap-3 flex-wrap">
           <a href="#menu" className="btn btn-outline-light px-4 py-2" style={{ borderRadius: 30, letterSpacing: 1 }}>Ver el menú</a>
+          {/* Botón de WhatsApp del hero oculto temporalmente.
+              Por ahora los pedidos se hacen desde la sección "Pedido".
+              Para volver a mostrarlo, descomenta el <a> de abajo.
           <a className="btn btn-whatsapp px-4 py-2" target="_blank" rel="noreferrer"
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`}>Pedir por WhatsApp</a>
+          */}
         </div>
       </div>
 
