@@ -403,6 +403,97 @@ section { padding: 80px 0; }
   .cart-item__remove { grid-column: auto; grid-row: auto; align-self: center; }
 }
 
+/* ---------- Metodos de pago ---------- */
+.metodo-pago {
+  margin: 28px 0 8px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(121, 196, 232, .25);
+}
+.metodo-pago h3 {
+  text-align: center;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+  color: var(--cream);
+}
+.opciones-pago {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.opcion-pago {
+  position: relative;
+  background: var(--navy-deep);
+  border: 2px solid rgba(121, 196, 232, .3);
+  border-radius: 16px;
+  color: var(--cream);
+  padding: 18px 8px;
+  min-height: 140px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.opcion-pago:hover {
+  border-color: var(--sky);
+  transform: translateY(-2px);
+}
+.opcion-pago .icono-pago {
+  font-size: 32px;
+  color: var(--orange);
+}
+.opcion-pago strong {
+  font-size: 1.15rem;
+  font-family: 'Playfair Display', serif;
+}
+.opcion-pago small {
+  color: var(--sky);
+  font-size: .8rem;
+}
+/* Check que solo aparece en la opcion elegida */
+.opcion-pago .pago-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--navy-deep);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.opcion-pago.seleccionada {
+  border-color: var(--orange);
+  background: rgba(232, 130, 58, .12);
+  box-shadow: 0 0 16px rgba(232, 130, 58, .22);
+}
+.opcion-pago.seleccionada .pago-check {
+  opacity: 1;
+  transform: scale(1);
+}
+#mensaje-pago {
+  text-align: center;
+  color: var(--sky);
+  font-size: .85rem;
+  margin: 15px 0 0;
+  min-height: 1.2em;
+}
+
+@media (max-width: 360px) {
+  .opciones-pago { gap: 8px; }
+  .opcion-pago { min-height: 120px; }
+  .opcion-pago strong { font-size: 1rem; }
+}
+
 /* ---------- Extras ---------- */
 .extras-box {
   border: 1px dashed rgba(232, 130, 58, 0.55);
