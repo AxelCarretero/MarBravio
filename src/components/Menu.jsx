@@ -196,7 +196,7 @@ export default function Menu() {
         ? '\n\nYa hice mi transferencia, aquí te envío mi comprobante.'
         : ''
     const texto = encodeURIComponent(
-      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}\nMétodo de pago: ${metodoPago || 'sin definir'}${recordatorioPago}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
+      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}\nMétodo de pago: ${metodoPago || 'sin definir'}${recordatorioPago}${notaGeneral ? `\n\nComentarios: ${notaGeneral}` : ''}`
     )
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, '_blank')
   }
@@ -350,10 +350,10 @@ export default function Menu() {
                   placeholder="Nombre de a quién va dirigido" style={{ color: '#fff' }} />
               </div>
               <div>
-                <label className="form-label">¿Algo más en especial? (ej. tosti, extra salsa)</label>
+                <label className="form-label">Comentarios generales</label>
                 <textarea className="form-control" rows="2" value={notaGeneral}
                   onChange={(e) => setNotaGeneral(e.target.value)}
-                  placeholder="Escribe aquí tus especificaciones generales..." style={{ color: '#fff' }}></textarea>
+                  placeholder="Cualquier comentario que quieras agregar a tu pedido..." style={{ color: '#fff' }}></textarea>
               </div>
               <div className="text-end mt-3">
                 <span style={{ fontSize: '1.3rem', color: '#f6f1e7' }}>Total: </span>
