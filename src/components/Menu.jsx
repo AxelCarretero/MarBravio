@@ -75,6 +75,16 @@ const EXTRA_SALSA = {
   precio: 15,
 }
 
+const METODOS_PAGO = [
+  { id: 'Efectivo', titulo: 'Efectivo', subtitulo: 'Pagar al recibir', icono: 'payments' },
+  { id: 'Tarjeta', titulo: 'Tarjeta', subtitulo: 'Pago con tarjeta', icono: 'credit_card' },
+]
+
+const MENSAJES_PAGO = {
+  Efectivo: 'Pagarás en efectivo al recibir tu pedido.',
+  Tarjeta: 'Elegiste tarjeta. Confirma el pago mediante el método habilitado por el negocio.',
+}
+
 export default function Menu() {
   useEffect(() => {
     M.Modal.init(document.querySelectorAll('.modal'))
@@ -83,7 +93,12 @@ export default function Menu() {
   const [cart, setCart] = useState([])
   const [notaGeneral, setNotaGeneral] = useState('')
   const [destinatario, setDestinatario] = useState('')
+  const [metodoPago, setMetodoPago] = useState(null)
   const [agregado, setAgregado] = useState(null)
+
+  const mensajePago = metodoPago
+    ? MENSAJES_PAGO[metodoPago]
+    : 'Elige tu método de pago para continuar'
 
   const agregar = (a, tipo) => {
     setCart((prev) => {
@@ -144,7 +159,7 @@ export default function Menu() {
       .join('\n')
     const total = cart.reduce((sum, i) => sum + i.precio * i.qty, 0)
     const texto = encodeURIComponent(
-      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
+      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}\nMétodo de pago: ${metodoPago || 'sin definir'}${notaGeneral ? `\n\nEspecificaciones: ${notaGeneral}` : ''}`
     )
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, '_blank')
   }
@@ -309,7 +324,29 @@ export default function Menu() {
                   ${cart.reduce((sum, i) => sum + i.precio * i.qty, 0).toFixed(0)}
                 </strong>
               </div>
-              <button className="btn btn-whatsapp px-4 py-2 mt-3" onClick={enviarPedido}>
+              {/* ---------- Metodos de pago ---------- */}
+              <div className="metodo-pago">
+                <h3 className="serif">¿Cómo deseas pagar?</h3>
+                <div className="opciones-pago">
+                  {METODOS_PAGO.map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      className={`opcion-pago ${metodoPago === m.id ? 'seleccionada' : ''}`}
+                      aria-pressed={metodoPago === m.id}
+                      onClick={() => setMetodoPago(m.id)}
+                    >
+                      <span className="material-icons icono-pago">{m.icono}</span>
+                      <strong>{m.titulo}</strong>
+                      <small>{m.subtitulo}</small>
+                      <span className="pago-check material-icons">check</span>
+                    </button>
+                  ))}
+                </div>
+                <p id="mensaje-pago">{mensajePago}</p>
+              </div>
+
+              <button className="btn btn-whatsapp px-4 py-2 mt-3 w-100" onClick={enviarPedido}>
                 Enviar pedido por WhatsApp
               </button>
             </>
