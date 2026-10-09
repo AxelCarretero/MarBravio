@@ -276,15 +276,63 @@ section { padding: 80px 0; }
 .prices-box h3 { letter-spacing: 4px; color: var(--cream); }
 .price-col h4 { font-family: 'Playfair Display', serif; color: var(--cream); letter-spacing: 2px; font-size: 1.05rem; }
 .price-col .amount { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--cream); }
+
+/* Titulo grande AGUACHILES + tarjeta del tosti */
+.aguachiles-titulo {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: var(--cream);
+  margin: 0 0 26px;
+}
+.tosti-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 26px 20px;
+  border: 1px solid rgba(242, 178, 62, .35);
+  border-radius: 18px;
+  background: rgba(242, 178, 62, .06);
+}
+.tosti-card__icon {
+  display: inline-flex;
+  width: 66px;
+  height: 66px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(242, 178, 62, .12);
+  border: 2px solid var(--yellow);
+}
+.tosti-card__icon svg { width: 38px; height: 38px; }
+.tosti-card__nombre {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  color: var(--cream);
+}
+.tosti-card__precio {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  font-weight: 800;
+  color: var(--yellow);
+}
 .btn-tosti {
   margin-top: 14px;
-  padding: 10px 16px;
+  width: 100%;
+  padding: 12px 16px;
   border: 2px solid var(--yellow);
   border-radius: 22px;
   background: transparent;
   color: var(--yellow);
   font-weight: 700;
-  font-size: .82rem;
+  font-size: .88rem;
   letter-spacing: .5px;
   cursor: pointer;
   white-space: nowrap;

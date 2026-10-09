@@ -272,26 +272,20 @@ export default function Menu() {
         </p>
 
         <div className="prices-box mt-4">
-          <h3 className="text-center serif">PRECIOS</h3>
-          <div className="row text-center mt-4">
-            <div className="col-md-4 price-col">
-              <h4>ORDEN BRAVÍA</h4>
-              <div className="amount">$245</div>
-            </div>
-            <div className="col-md-4 price-col">
-              <h4>1/2 ORDEN</h4>
-              <div className="amount">$160</div>
-            </div>
-            <div className="col-md-4 price-col">
-              <h4>TOSTI AGUACHILES</h4>
-              <div className="amount">${TOSTI.precio}</div>
-              <button
-                className={`btn-agregar btn-tosti ${agregado === 'tosti-tosti' ? 'agregado' : ''}`}
-                onClick={agregarTosti}
-              >
-                {agregado === 'tosti-tosti' ? '✓ Agregado' : '+ Agregar al pedido'}
-              </button>
-            </div>
+          <h3 className="aguachiles-titulo">AGUACHILES</h3>
+
+          <div className="tosti-card">
+            <span className="tosti-card__icon">
+              <IconoAguachile tipo={TOSTI.icono} color={TOSTI.color} />
+            </span>
+            <h4 className="tosti-card__nombre">Tosti de aguachiles</h4>
+            <div className="tosti-card__precio">${TOSTI.precio}</div>
+            <button
+              className={`btn-agregar btn-tosti ${agregado === 'tosti-tosti' ? 'agregado' : ''}`}
+              onClick={agregarTosti}
+            >
+              {agregado === 'tosti-tosti' ? '✓ Agregado' : '+ Agregar al pedido'}
+            </button>
           </div>
         </div>
 
