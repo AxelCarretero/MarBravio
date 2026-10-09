@@ -1,9 +1,10 @@
 import React from 'react'
 
-// Catering oculto temporalmente (por ahora no ofrecemos ese servicio).
-// Para volver a mostrarlo, descomenta la línea de abajo:
+// Catering y "Comer en el lugar" ocultos temporalmente (por ahora solo
+// ofrecemos para llevar y entrega a domicilio).
+// Para volver a mostrarlos, descomenta las líneas correspondientes.
 const servicios = [
-  { icon: 'restaurant', titulo: 'Comer en el lugar', texto: 'Un ambiente cálido frente al mar para disfrutar nuestros aguachiles recién preparados.' },
+  // { icon: 'restaurant', titulo: 'Comer en el lugar', texto: 'Un ambiente cálido frente al mar para disfrutar nuestros aguachiles recién preparados.' },
   { icon: 'shopping_bag', titulo: 'Para llevar', texto: 'Pide desde casa, recoge en local y llévate el sabor del mar donde tú quieras.' },
   // { icon: 'room_service', titulo: 'Catering', texto: 'Llevamos MarBravio a tus eventos: bodas, fiestas y celebraciones con sazón marino.' },
   { icon: 'delivery_dining', titulo: 'Entrega a domicilio', texto: 'Próximamente enables este servicio. Mientras tanto, puedes recoger tu pedido directamente en nuestro local.' },
@@ -18,7 +19,7 @@ export default function Servicios() {
         <div className="divider-line"></div>
         <div className="row g-4">
           {servicios.map((s) => (
-            <div className="col-12 col-sm-6 col-lg-4" key={s.titulo}>
+            <div className="col-12 col-sm-6 col-lg-6" key={s.titulo}>
               <div className="servicio-card reveal">
                 <span className="material-icons">{s.icon}</span>
                 <h3>{s.titulo}</h3>
