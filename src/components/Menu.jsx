@@ -355,11 +355,13 @@ export default function Menu() {
                   onChange={(e) => setNotaGeneral(e.target.value)}
                   placeholder="Cualquier comentario que quieras agregar a tu pedido..." style={{ color: '#fff' }}></textarea>
               </div>
-              <div className="text-end mt-3">
-                <span style={{ fontSize: '1.3rem', color: '#f6f1e7' }}>Total: </span>
-                <strong className="serif" style={{ fontSize: '1.8rem', color: '#f2b23e' }}>
-                  ${cart.reduce((sum, i) => sum + i.precio * i.qty, 0).toFixed(0)}
-                </strong>
+              <div className="pedido-cierre">
+                <div className="pedido-total">
+                  <span className="pedido-total__label">Total del pedido</span>
+                  <strong className="pedido-total__monto">
+                    ${cart.reduce((sum, i) => sum + i.precio * i.qty, 0).toFixed(0)}
+                  </strong>
+                </div>
               </div>
               {/* ---------- Metodos de pago ---------- */}
               <div className="metodo-pago">
@@ -418,8 +420,11 @@ export default function Menu() {
                 )}
               </div>
 
-              <button className="btn btn-whatsapp px-4 py-2 mt-3 w-100" onClick={enviarPedido}>
-                Enviar pedido por WhatsApp
+              <button type="button" className="btn-enviar-pedido" onClick={enviarPedido}>
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M16.003 3C9.373 3 4 8.373 4 15.003c0 2.385.697 4.606 1.9 6.478L4 29l7.72-1.87a11.93 11.93 0 0 0 4.283.77h.003C22.633 27.9 28 22.527 28 15.897 28 9.267 22.633 3 16.003 3zm0 21.62a9.9 9.9 0 0 1-5.04-1.376l-.362-.214-4.578 1.108 1.22-4.46-.235-.375a9.83 9.83 0 0 1-1.51-5.3c0-5.443 4.43-9.867 9.878-9.867 5.444 0 9.868 4.424 9.868 9.867 0 5.443-4.424 9.87-9.868 9.87v-.36zm5.41-7.39c-.297-.148-1.757-.867-2.03-.966-.272-.1-.47-.148-.67.148-.198.297-.768.966-.94 1.165-.173.198-.347.223-.644.074-.297-.148-1.255-.463-2.39-1.475-.883-.787-1.48-1.762-1.654-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.148-.174.198-.298.297-.497.1-.198.05-.372-.025-.52-.074-.148-.669-1.613-.917-2.21-.241-.58-.487-.502-.67-.511l-.57-.01c-.198 0-.521.074-.794.372-.272.297-1.04 1.017-1.04 2.48s1.066 2.876 1.215 3.075c.148.198 2.1 3.206 5.087 4.495.711.307 1.265.49 1.697.627.713.227 1.362.195 1.875.118.572-.085 1.757-.718 2.005-1.411.248-.694.248-1.29.173-1.412-.074-.124-.272-.198-.57-.347z" />
+                </svg>
+                <span>Enviar pedido por WhatsApp</span>
               </button>
             </>
           )}

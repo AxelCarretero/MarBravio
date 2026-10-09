@@ -403,6 +403,76 @@ section { padding: 80px 0; }
   .cart-item__remove { grid-column: auto; grid-row: auto; align-self: center; }
 }
 
+/* ---------- Cierre del pedido (total + boton) ---------- */
+.pedido-cierre {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(121, 196, 232, .2);
+}
+.pedido-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.pedido-total__label {
+  font-size: .85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(246, 241, 231, .7);
+}
+.pedido-total__monto {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 5vw, 2.4rem);
+  font-weight: 800;
+  color: var(--yellow);
+  line-height: 1.1;
+}
+.btn-enviar-pedido {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px;
+  background: #25d366;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.btn-enviar-pedido svg { width: 24px; height: 24px; fill: #fff; flex: 0 0 24px; }
+.btn-enviar-pedido span { line-height: 1.2; }
+.btn-enviar-pedido:hover {
+  transform: translateY(-2px);
+  background: #1fbe5b;
+  box-shadow: 0 10px 24px rgba(37, 211, 102, .45);
+}
+.btn-enviar-pedido:active { transform: translateY(0); }
+
+/* En movil el total se centra para no quedar pegado a un solo lado */
+@media (max-width: 575.98px) {
+  .pedido-total {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+  }
+  .btn-enviar-pedido {
+    font-size: .95rem;
+    padding: 12px 14px;
+  }
+}
+
 /* ---------- Metodos de pago ---------- */
 .metodo-pago {
   margin: 28px 0 8px;
