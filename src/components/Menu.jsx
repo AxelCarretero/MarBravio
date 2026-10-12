@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
-import { estadoHorario } from '../horario'
+import useHorario from '../useHorario'
 import BotonWhatsApp from './BotonWhatsApp'
 
 // Iconos dibujados a mano con el mismo estilo de línea para que los cuatro
@@ -121,13 +121,10 @@ const MENSAJES_PAGO = {
 }
 
 export default function Menu() {
-  const [horario, setHorario] = useState(() => estadoHorario())
+  const horario = useHorario()
 
   useEffect(() => {
     M.Modal.init(document.querySelectorAll('.modal'))
-    // Revisamos el horario cada minuto para abrir/cerrar solo
-    const timer = setInterval(() => setHorario(estadoHorario()), 60 * 1000)
-    return () => clearInterval(timer)
   }, [])
 
   const pedidosCerrados = horario.aplica && !horario.abierto
@@ -314,24 +311,6 @@ export default function Menu() {
             Ver carta completa
           </a>
         </div>
-
-        {/* ---------- Aviso de horario al final del menu ---------- */}
-        {horario.aplica && (
-          <div className={`horario-banner ${horario.abierto ? 'abierto' : 'cerrado'}`} role="status">
-            <span className="material-icons">{horario.abierto ? 'storefront' : 'schedule'}</span>
-            <div>
-              <strong>{horario.mensaje}</strong>
-              {horario.abierto ? (
-                <p>{horario.detalle}</p>
-              ) : (
-                <p>
-                  {horario.detalle}
-                  {horario.proxima ? ` ${horario.proxima}` : ''}
-                </p>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* ---------- Carrito de pedido ---------- */}
         <div className="contacto-box mt-5">

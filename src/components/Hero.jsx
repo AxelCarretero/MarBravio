@@ -1,7 +1,10 @@
 import React from 'react'
 import { WHATSAPP_NUMBER, WHATSAPP_MSG } from '../App'
+import useHorario from '../useHorario'
 
 export default function Hero() {
+  const horario = useHorario()
+
   return (
     <header id="inicio" className="hero">
       <div className="container text-center">
@@ -20,6 +23,24 @@ export default function Hero() {
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`}>Pedir por WhatsApp</a>
           */}
         </div>
+
+        {/* ---------- Aviso de horario ---------- */}
+        {horario.aplica && (
+          <div className={`horario-banner ${horario.abierto ? 'abierto' : 'cerrado'}`} role="status">
+            <span className="material-icons">{horario.abierto ? 'storefront' : 'schedule'}</span>
+            <div>
+              <strong>{horario.mensaje}</strong>
+              {horario.abierto ? (
+                <p>{horario.detalle}</p>
+              ) : (
+                <p>
+                  {horario.detalle}
+                  {horario.proxima ? ` ${horario.proxima}` : ''}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="hero-waves" aria-hidden="true">
