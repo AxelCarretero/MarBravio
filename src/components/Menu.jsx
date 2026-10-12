@@ -290,23 +290,6 @@ export default function Menu() {
           Tú decides qué tan bravío lo quieres 🌶️
         </p>
 
-        {horario.aplica && (
-          <div className={`horario-banner ${horario.abierto ? 'abierto' : 'cerrado'}`} role="status">
-            <span className="material-icons">{horario.abierto ? 'storefront' : 'schedule'}</span>
-            <div>
-              <strong>{horario.mensaje}</strong>
-              {horario.abierto ? (
-                <p>{horario.detalle}</p>
-              ) : (
-                <p>
-                  {horario.detalle}
-                  {horario.proxima ? ` ${horario.proxima}` : ''}
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
         <div className="prices-box mt-4">
           <h3 className="aguachiles-titulo">AGUACHILES</h3>
 
@@ -331,6 +314,24 @@ export default function Menu() {
             Ver carta completa
           </a>
         </div>
+
+        {/* ---------- Aviso de horario al final del menu ---------- */}
+        {horario.aplica && (
+          <div className={`horario-banner ${horario.abierto ? 'abierto' : 'cerrado'}`} role="status">
+            <span className="material-icons">{horario.abierto ? 'storefront' : 'schedule'}</span>
+            <div>
+              <strong>{horario.mensaje}</strong>
+              {horario.abierto ? (
+                <p>{horario.detalle}</p>
+              ) : (
+                <p>
+                  {horario.detalle}
+                  {horario.proxima ? ` ${horario.proxima}` : ''}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* ---------- Carrito de pedido ---------- */}
         <div className="contacto-box mt-5">
