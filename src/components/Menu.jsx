@@ -193,17 +193,27 @@ export default function Menu() {
     setTimeout(() => setAgregado(null), 1600)
   }
 
-  const agregarTosti = () => {
+  const abrirSelectorTosti = () => {
     if (pedidosCerrados) return
+    const modal = document.getElementById('tostiModal')
+    if (modal) M.Modal.getInstance(modal)?.open()
+  }
+
+  const agregarTosti = (sabor) => {
+    if (pedidosCerrados) return
+    // El nombre incluye el sabor para que cada uno sea su propia linea del pedido
+    const nombre = `${TOSTI.nombre} (${sabor})`
     setCart((prev) => {
-      const existe = prev.find((i) => i.tipo === TOSTI.tipo)
+      const existe = prev.find((i) => i.tipo === TOSTI.tipo && i.sabor === sabor)
       if (existe) {
-        return prev.map((i) => i.tipo === TOSTI.tipo ? { ...i, qty: i.qty + 1 } : i)
+        return prev.map((i) => (i.tipo === TOSTI.tipo && i.sabor === sabor ? { ...i, qty: i.qty + 1 } : i))
       }
-      return [...prev, { ...TOSTI, qty: 1, nota: '' }]
+      return [...prev, { ...TOSTI, nombre, sabor, qty: 1, nota: '' }]
     })
-    setAgregado('tosti-tosti')
+    setAgregado(`tosti-${sabor}`)
     setTimeout(() => setAgregado(null), 1600)
+    const modal = document.getElementById('tostiModal')
+    if (modal) M.Modal.getInstance(modal)?.close()
   }
 
   const cambiarQty = (nombre, tipo, delta) => {
@@ -297,12 +307,13 @@ export default function Menu() {
             <h4 className="tosti-card__nombre">Tosti de aguachiles</h4>
             <div className="tosti-card__precio">${TOSTI.precio}</div>
             <button
-              className={`btn-agregar btn-tosti ${agregado === 'tosti-tosti' ? 'agregado' : ''}`}
-              onClick={agregarTosti}
+              className={`btn-agregar btn-tosti ${agregado?.startsWith('tosti-') ? 'agregado' : ''}`}
+              onClick={abrirSelectorTosti}
               disabled={pedidosCerrados}
             >
-              {agregado === 'tosti-tosti' ? '✓ Agregado' : '+ Agregar al pedido'}
+              {agregado?.startsWith('tosti-') ? '✓ Agregado' : '+ Agregar al pedido'}
             </button>
+            <small className="tosti-card__hint">Elige de qué sabor lo quieres</small>
           </div>
         </div>
 
@@ -478,6 +489,33 @@ export default function Menu() {
               />
             </>
           )}
+        </div>
+      </div>
+
+      {/* ---------- Selector de sabor del tosti ---------- */}
+      <div id="tostiModal" className="modal" style={{ maxWidth: 640 }}>
+        <div className="modal-content tosti-modal">
+          <h4 className="serif">¿De qué sabor es tu tosti?</h4>
+          <p className="tosti-modal__texto">Todos los tostitos llevan los 4 sabores. Elige el que quieras.</p>
+          <div className="tosti-modal__grid">
+            {aguachiles.map((a) => (
+              <button
+                key={a.nombre}
+                type="button"
+                className="tosti-opcion"
+                onClick={() => agregarTosti(a.nombre)}
+              >
+                <span className="tosti-opcion__icono" style={{ borderColor: a.color }}>
+                  <IconoAguachile imagen={a.imagen} alt={a.nombre} />
+                </span>
+                <strong>{a.nombre}</strong>
+                <small style={{ color: a.color }}>{a.apodo}</small>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="modal-footer" style={{ background: '#0a2540' }}>
+          <a href="#!" className="modal-close btn-flat" style={{ color: '#79c4e8' }}>Cerrar</a>
         </div>
       </div>
 

@@ -353,11 +353,79 @@ section { padding: 80px 0; }
   transition: transform .2s, background .25s, border-color .25s;
 }
 .btn-tosti:hover { background: rgba(242, 178, 62, .15); transform: translateY(-2px); }
+.tosti-card__hint {
+  margin-top: 10px;
+  font-size: .75rem;
+  color: rgba(246, 241, 231, .55);
+}
 .btn-tosti.agregado {
   background: #25d366;
   border-color: #25d366;
   color: #fff;
   animation: agregarPop .45s ease;
+}
+
+/* ---------- Modal: selector de sabor del tosti ---------- */
+.tosti-modal {
+  background: var(--navy-soft);
+  border-radius: 16px;
+  padding: 28px 24px;
+  border: 1px solid rgba(121, 196, 232, .3);
+}
+.tosti-modal h4 {
+  text-align: center;
+  color: var(--cream);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.tosti-modal__texto {
+  text-align: center;
+  color: rgba(246, 241, 231, .7);
+  font-size: .85rem;
+  margin-bottom: 22px;
+}
+.tosti-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.tosti-opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 8px;
+  border: 2px solid rgba(121, 196, 232, .28);
+  border-radius: 14px;
+  background: var(--navy-deep);
+  color: var(--cream);
+  cursor: pointer;
+  transition: transform .2s, border-color .2s, background .2s;
+}
+.tosti-opcion:hover {
+  transform: translateY(-3px);
+  background: rgba(121, 196, 232, .1);
+}
+.tosti-opcion__icono {
+  display: inline-flex;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.tosti-opcion__icono img { width: 44px; height: 44px; object-fit: contain; }
+.tosti-opcion strong {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+.tosti-opcion small { font-size: .72rem; letter-spacing: .5px; }
+
+@media (max-width: 575.98px) {
+  .tosti-modal__grid { grid-template-columns: repeat(2, 1fr); }
 }
 .price-col + .price-col { border-left: 1px solid rgba(121,196,232,.3); }
 
