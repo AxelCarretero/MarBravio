@@ -149,6 +149,10 @@ function nombreEnPedido(item) {
   return item.nombre
 }
 
+// Aviso que el cliente debe leer tanto en la pagina como en el WhatsApp,
+// por eso vive en una sola constante y se usa en los dos lados.
+const AVISO_PEDIDO = 'Tu pedido se hará después de enviar tu comprobante.'
+
 // Mercado Pago todavia no esta disponible: queda en la lista pero con activo: false
 // para ocultarlo sin borrarlo. Basta con poner activo: true cuando este listo.
 const METODOS_PAGO = [
@@ -309,13 +313,24 @@ export default function Menu() {
       })
       .join('\n')
     const total = cart.reduce((sum, i) => sum + i.precio * i.qty, 0)
-    const recordatorioPago =
-      metodoPago === 'Transferencia'
-        ? '\n\nYa hice mi transferencia, aquí te envío mi comprobante.'
-        : ''
-    const texto = encodeURIComponent(
-      `Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?\n\nPara: ${destinatario.trim() || '(sin nombre)'}\n\nMi pedido:\n${lineas}\n\nTotal: $${total}\nMétodo de pago: ${metodoPago || 'sin definir'}${recordatorioPago}${notaGeneral ? `\n\nComentarios: ${notaGeneral}` : ''}`
-    )
+
+    // El mensaje va por bloques separados con una linea en blanco para que se
+    // lea bien en el chat: saludo, para quien es, que pidio, cuanto paga y el aviso.
+    const bloques = [
+      'Hola! te ví en tu pagina web MarBravio, deseo hacer un pedido, me tomas la orden?',
+      `*Para:* ${destinatario.trim() || '(sin nombre)'}`,
+      `*Mi pedido:*\n${lineas}`,
+      `*Total:* $${total}`,
+      `*Método de pago:* ${metodoPago}`,
+    ]
+    if (metodoPago === 'Transferencia') {
+      bloques.push('Ya hice mi transferencia, aquí te envío mi comprobante.')
+    }
+    if (notaGeneral.trim()) bloques.push(`*Comentarios:* ${notaGeneral.trim()}`)
+    // El mismo aviso que aparece en la pagina, aqui al final
+    bloques.push(AVISO_PEDIDO)
+
+    const texto = encodeURIComponent(bloques.join('\n\n'))
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, '_blank')
   }
 
@@ -559,6 +574,14 @@ export default function Menu() {
                       </div>
                     </div>
                   </div>
+                )}
+
+                {/* Aviso que se repite al final del mensaje de WhatsApp */}
+                {metodoPago && (
+                  <p className="pago-confirmacion" role="status">
+                    <span className="material-icons">info</span>
+                    {AVISO_PEDIDO}
+                  </p>
                 )}
               </div>
 

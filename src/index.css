@@ -763,6 +763,33 @@ section { padding: 80px 0; }
   font-size: .8rem;
 }
 
+/* Aviso de confirmacion que aparece al elegir metodo de pago */
+.pago-confirmacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  border: 1px solid rgba(121, 196, 232, .55);
+  background: rgba(121, 196, 232, .1);
+  border-radius: 12px;
+  color: var(--cream);
+  font-size: .95rem;
+  font-weight: 600;
+  text-align: center;
+  animation: fadeIn .35s ease;
+}
+.pago-confirmacion .material-icons {
+  color: var(--sky);
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Aviso: falta elegir metodo de pago antes de enviar el pedido */
 .pago-faltante {
   display: flex;
