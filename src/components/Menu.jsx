@@ -268,7 +268,7 @@ export default function Menu() {
       if (existe) {
         return prev.map((i) => (i.tipo === TOSTI.tipo && i.sabor === sabor ? { ...i, qty: i.qty + 1 } : i))
       }
-      return [...prev, { ...TOSTI, nombre, sabor, qty: 1, nota: '' }]
+      return [...prev, { ...TOSTI, nombre, sabor, qty: 1, nota: '', picor: 'medio' }]
     })
     setAgregado(`tosti-${sabor}`)
     setTimeout(() => setAgregado(null), 1600)
@@ -308,7 +308,8 @@ export default function Menu() {
         //  - Aguachile entero    -> "Verde (Orden)"
         //  - Aguachile medio     -> "Verde (1/2)"
         const etiqueta = nombreEnPedido(i)
-        const picor = i.tipo === 'orden' || i.tipo === 'media' ? ` — Picor: ${i.picor || 'medio'}` : ''
+        // Los extras no llevan picor; los aguachiles y los tostitos si
+        const picor = i.tipo === 'extra' ? '' : ` — Picor: ${i.picor || 'medio'}`
         return `• ${i.qty}x ${etiqueta}${picor} — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`
       })
       .join('\n')
@@ -465,9 +466,8 @@ export default function Menu() {
                   <div className="cart-item__picor">
                     {i.tipo === 'extra' ? (
                       <small className="cart-item__nota-label">{i.etiqueta}</small>
-                    ) : i.tipo === 'tosti' ? (
-                      <small className="cart-item__nota-label">Acompañamiento</small>
                     ) : (
+                      /* Aguachiles y tostitos eligen su nivel de picor */
                       <select className="form-select form-select-sm" aria-label="Nivel de picor" value={i.picor || 'medio'}
                         onChange={(e) => setPicor(i.nombre, i.tipo, e.target.value)}>
                         <option value="bajo">Picor: Bajo</option>
