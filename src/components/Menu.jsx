@@ -151,7 +151,11 @@ function nombreEnPedido(item) {
 
 // Aviso que el cliente debe leer tanto en la pagina como en el WhatsApp,
 // por eso vive en una sola constante y se usa en los dos lados.
-const AVISO_PEDIDO = 'Tu pedido se hará después de enviar tu comprobante.'
+// Cada metodo de pago tiene su texto: en efectivo no hay comprobante que enviar.
+const AVISO_PEDIDO = {
+  Efectivo: 'Al pagar en local, se te entrega el producto.',
+  Transferencia: 'Tu pedido se hará después de enviar tu comprobante.',
+}
 
 // Mercado Pago todavia no esta disponible: queda en la lista pero con activo: false
 // para ocultarlo sin borrarlo. Basta con poner activo: true cuando este listo.
@@ -329,7 +333,7 @@ export default function Menu() {
     }
     if (notaGeneral.trim()) bloques.push(`*Comentarios:* ${notaGeneral.trim()}`)
     // El mismo aviso que aparece en la pagina, aqui al final
-    bloques.push(AVISO_PEDIDO)
+    bloques.push(AVISO_PEDIDO[metodoPago])
 
     const texto = encodeURIComponent(bloques.join('\n\n'))
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, '_blank')
@@ -580,7 +584,7 @@ export default function Menu() {
                 {metodoPago && (
                   <p className="pago-confirmacion" role="status">
                     <span className="material-icons">info</span>
-                    {AVISO_PEDIDO}
+                    {AVISO_PEDIDO[metodoPago]}
                   </p>
                 )}
               </div>
