@@ -2,6 +2,18 @@ import React, { useState } from 'react'
 import { WHATSAPP_NUMBER } from '../App'
 import BotonWhatsApp from './BotonWhatsApp'
 
+// Por ahora solo se muestran los datos y el mapa. Ponlo en true para volver
+// a mostrar el formulario de contacto debajo.
+const MOSTRAR_FORMULARIO = false
+
+const DATOS_CONTACTO = [
+  // La direccion no es link: el boton "Ver en Google Maps" de abajo hace eso mismo
+  { icono: 'location_on', etiqueta: 'Dirección', valor: 'Pamplona 1191, Santa Elena Alcalde, C.P. 44220, Guadalajara, Jal.' },
+  { icono: 'phone', etiqueta: 'Teléfono', valor: '+52 1 33 2599 5637', enlace: 'tel:+523325995637' },
+  { icono: 'email', etiqueta: 'Correo', valor: 'zercherrera@gmail.com', enlace: 'mailto:zercherrera@gmail.com' },
+  { icono: 'schedule', etiqueta: 'Horario', valor: 'Mié, Jue y Sáb: 4:30 PM – 7:00 PM · Dom: 10:00 AM – 4:00 PM' },
+]
+
 export default function Contacto() {
   const [form, setForm] = useState({ nombre: '', telefono: '', mensaje: '' })
 
@@ -20,66 +32,82 @@ export default function Contacto() {
         <div className="section-subtitle">estamos para servirte</div>
         <div className="divider-line"></div>
 
-        <div className="row g-4">
-          <div className="col-lg-5">
-            <div className="contacto-box">
-                            <h3 className="serif mb-2" style={{ fontSize: '1.35rem', lineHeight: 1.3 }}>
+        <div className="contacto-box">
+          {/* Datos a la izquierda, mapa a la derecha; en celular se apilan */}
+          <div className="contacto-grid">
+            <div className="contacto-datos">
+              <h3 className="serif contacto-datos__titulo">
                 Mariscos y aguachiles en Guadalajara, zona Atemajac
               </h3>
-              <p style={{ color: 'rgba(246,241,231,.8)', fontSize: '.9rem' }}>
+              <p className="contacto-datos__texto">
                 Cocina del mar en el poniente de Guadalajara. Mariscos frescos, aguachiles
                 preparados al momento y salsa marisquera de la casa. Orden Bravía $245,
                 1/2 orden $160 y Tosti $180.
               </p>
-              <p><span className="material-icons">location_on</span> Pamplona 1191, Santa Elena Alcalde, C.P. 44220, Guadalajara, Jal., México</p>
-              <p className="mt-2">
-                <a className="btn btn-sm btn-outline-light" style={{ borderRadius: 20 }} target="_blank" rel="noreferrer"
-                  href="https://maps.app.goo.gl/ytgZ3CzYhC36BAc5A">📍 Ver en Google Maps</a>
-              </p>
-              <p><span className="material-icons">phone</span> +52 1 33 2599 5637</p>
-              <p><span className="material-icons">email</span> zercherrera@gmail.com</p>
-              <p><span className="material-icons">schedule</span> Mié, Jue y Sáb: 4:30 PM – 7:00 PM · Dom: 10:00 AM – 4:00 PM</p>
-              <div className="mt-3" style={{ borderRadius: 12, overflow: 'hidden' }}>
-                <iframe
-                  title="Ubicación MarBravio"
-                  width="100%"
-                  height="220"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src="https://maps.google.com/maps?q=Pamplona+1191,+Santa+Elena+Alcalde,+44220+Guadalajara,+Jal&output=embed">
-                </iframe>
-              </div>
+
+              <ul className="contacto-lista">
+                {DATOS_CONTACTO.map((d) => (
+                  <li className="contacto-dato" key={d.etiqueta}>
+                    <span className="material-icons contacto-dato__icono" aria-hidden="true">{d.icono}</span>
+                    <span className="contacto-dato__texto">
+                      <span className="contacto-dato__etiqueta">{d.etiqueta}</span>
+                      {d.enlace ? (
+                        <a href={d.enlace}>{d.valor}</a>
+                      ) : (
+                        d.valor
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-          <div className="col-lg-7">
-            <div className="contacto-box">
-              <form onSubmit={enviar}>
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <label className="form-label">Nombre</label>
-                    <input className="form-control" required value={form.nombre}
-                      onChange={(e) => setForm({ ...form, nombre: e.target.value })} />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="form-label">Teléfono</label>
-                    <input className="form-control" value={form.telefono}
-                      onChange={(e) => setForm({ ...form, telefono: e.target.value })} />
-                  </div>
-                  <div className="col-12">
-                    <label className="form-label">Mensaje o pedido</label>
-                    <textarea className="form-control" rows="4" required value={form.mensaje}
-                      onChange={(e) => setForm({ ...form, mensaje: e.target.value })}></textarea>
-                  </div>
-                  <div className="col-12">
-                    <BotonWhatsApp type="submit" onClick={enviar} texto="Enviar por WhatsApp" />
-                  </div>
-                </div>
-              </form>
+
+            <div className="contacto-mapa">
+              <iframe
+                title="Ubicación MarBravio"
+                src="https://maps.google.com/maps?q=Pamplona+1191,+Santa+Elena+Alcalde,+44220+Guadalajara,+Jal&output=embed"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <a
+                className="btn btn-sm btn-outline-light contacto-mapa__link"
+                target="_blank"
+                rel="noreferrer"
+                href="https://maps.app.goo.gl/ytgZ3CzYhC36BAc5A"
+              >
+                <span className="material-icons">place</span> Ver en Google Maps
+              </a>
             </div>
           </div>
         </div>
+
+        {MOSTRAR_FORMULARIO && (
+          <div className="contacto-box contacto-form">
+            <form onSubmit={enviar}>
+              <div className="row g-3">
+                <div className="col-md-6">
+                  <label className="form-label">Nombre</label>
+                  <input className="form-control" required value={form.nombre}
+                    onChange={(e) => setForm({ ...form, nombre: e.target.value })} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Teléfono</label>
+                  <input className="form-control" value={form.telefono}
+                    onChange={(e) => setForm({ ...form, telefono: e.target.value })} />
+                </div>
+                <div className="col-12">
+                  <label className="form-label">Mensaje o pedido</label>
+                  <textarea className="form-control" rows="4" required value={form.mensaje}
+                    onChange={(e) => setForm({ ...form, mensaje: e.target.value })}></textarea>
+                </div>
+                <div className="col-12">
+                  <BotonWhatsApp type="submit" onClick={enviar} texto="Enviar por WhatsApp" />
+                </div>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </section>
   )
