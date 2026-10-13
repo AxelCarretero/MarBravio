@@ -3,6 +3,23 @@ import { WHATSAPP_NUMBER, WHATSAPP_MSG } from '../App'
 import useHorario from '../useHorario'
 import { RESTRINGIR_PEDIDOS_POR_HORARIO } from '../horario'
 
+// La ola decorativa: un grupo de trazos finos que suben y bajan, igual que la
+// ola a pincel del logo. Se dibuja con varias curvas paralelas y cada una
+// mas apagada que la anterior para dar esa sensacion de pincel.
+const OLA_FORMA = 'M-40 214 C 62 152, 132 58, 244 84 C 356 110, 436 152, 528 96 C 588 58, 628 36, 690 42'
+const OLA_LINEAS = [
+  { dy: 0, op: 0.5 },
+  { dy: 9, op: 0.46 },
+  { dy: 19, op: 0.42 },
+  { dy: 30, op: 0.37 },
+  { dy: 42, op: 0.32 },
+  { dy: 55, op: 0.27 },
+  { dy: 69, op: 0.22 },
+  { dy: 84, op: 0.17 },
+  { dy: 100, op: 0.12 },
+  { dy: 117, op: 0.08 },
+]
+
 export default function Hero() {
   const horario = useHorario()
   // El interruptor solo controla los botones; el letrero siempre se muestra.
@@ -10,6 +27,17 @@ export default function Hero() {
 
   return (
     <header id="inicio" className="hero">
+      {/* Ola decorativa del logo, en la esquina izquierda */}
+      <div className="hero-ola" aria-hidden="true">
+        <svg viewBox="0 0 640 340" preserveAspectRatio="xMinYMin meet">
+          <g className="hero-ola__lineas" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            {OLA_LINEAS.map((l) => (
+              <path key={l.dy} d={OLA_FORMA} transform={`translate(0 ${l.dy})`} opacity={l.op} />
+            ))}
+          </g>
+        </svg>
+      </div>
+
       <div className="container text-center">
         <img className="logo floaty" src="/assets/logo.jpg" alt="MarBravio · Cocina del Mar" />
         <svg className="wave-svg" width="160" height="20" viewBox="0 0 160 20" fill="none">

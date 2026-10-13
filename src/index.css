@@ -175,6 +175,65 @@ h1, h2, h3, h4, .serif {
   overflow: hidden;
 }
 
+/* El contenido va por encima de las olas decorativas */
+.hero > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Ola decorativa (estilo pincel del logo) ---------- */
+.hero-ola {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(52vw, 780px);
+  color: var(--sky);
+  pointer-events: none;
+  z-index: 0;
+  opacity: .5;
+  -webkit-mask-image: linear-gradient(105deg, #000 55%, transparent 100%);
+  mask-image: linear-gradient(105deg, #000 55%, transparent 100%);
+}
+.hero-ola svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Deriva lenta: la ola respira hacia un lado y otro, como si el mar se moviera */
+.hero-ola__lineas {
+  animation: olaDeriva 16s ease-in-out infinite;
+  transform-origin: 0 50%;
+}
+@keyframes olaDeriva {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .85; }
+  50%      { transform: translate3d(-30px, 10px, 0); opacity: 1; }
+}
+
+/* En celular se hace más ancha y baja de opacidad para no competir con el logo */
+@media (max-width: 991.98px) {
+  .hero-ola {
+    width: 92vw;
+    top: -4%;
+    opacity: .3;
+  }
+}
+@media (max-width: 575.98px) {
+  .hero-ola {
+    width: 135vw;
+    left: -34%;
+    top: -2%;
+    opacity: .24;
+  }
+  .hero-ola__lineas { animation-duration: 20s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ola__lineas { animation: none; }
+  .hero-waves svg { animation: none; }
+}
+
 .hero-waves {
   position: absolute;
   bottom: 0; left: 0; right: 0;
