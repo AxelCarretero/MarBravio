@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
 import useHorario from '../useHorario'
+import { RESTRINGIR_PEDIDOS_POR_HORARIO } from '../horario'
 import BotonWhatsApp from './BotonWhatsApp'
 
 // Iconos dibujados a mano con el mismo estilo de línea para que los cuatro
@@ -127,7 +128,8 @@ export default function Menu() {
     M.Modal.init(document.querySelectorAll('.modal'))
   }, [])
 
-  const pedidosCerrados = horario.aplica && !horario.abierto
+  // Los botones solo se bloquean si el interruptor esta activo y estamos cerrados
+  const pedidosCerrados = RESTRINGIR_PEDIDOS_POR_HORARIO && !horario.abierto
 
   const [cart, setCart] = useState([])
   const [notaGeneral, setNotaGeneral] = useState('')
@@ -264,7 +266,7 @@ export default function Menu() {
 
         <div className="row g-4">
           {aguachiles.map((a) => (
-            <div className="col-6 col-lg-3" key={a.nombre}>
+            <div className="col-12 col-sm-6 col-lg-3" key={a.nombre}>
               <div className="menu-card reveal" style={{ color: a.color }}>
                 <div className="icon-badge" style={{ color: a.color }}>
                   <IconoAguachile imagen={a.imagen} color={a.color} alt={`Aguachile ${a.nombre}`} />

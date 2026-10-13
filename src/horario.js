@@ -10,7 +10,7 @@
 
 // false = los botones funcionan siempre
 // true  = los botones solo funcionan dentro del horario de pedidos
-export const RESTRINGIR_PEDIDOS_POR_HORARIO = true
+export const RESTRINGIR_PEDIDOS_POR_HORARIO = false
 
 // Zona horaria del restaurante (no la del visitante)
 export const ZONA_HORARIA = 'America/Mexico_City'
@@ -86,31 +86,20 @@ function proximaApertura(dia, minutos) {
 }
 
 /**
- * Estado actual para la interfaz.
+ * Estado real del restaurante segun la hora de Guadalajara.
+ * Esto NO depende del interruptor: el letrero de la pagina siempre
+ * refleja si estamos abiertos o cerrados.
  * @returns {{
- *   aplica: boolean, abierto: boolean,
- *   mensaje: string, detalle: string, proxima: string
+ *   abierto: boolean, mensaje: string, detalle: string, proxima: string
  * }}
  */
 export function estadoHorario() {
   const { dia, minutos } = ahoraEnRestaurante()
-
-  if (!RESTRINGIR_PEDIDOS_POR_HORARIO) {
-    return {
-      aplica: false,
-      abierto: true,
-      mensaje: '',
-      detalle: '',
-      proxima: '',
-    }
-  }
-
   const abierto = estaAbierto(dia, minutos)
 
   if (abierto) {
     const bloque = HORARIO.find((b) => b.dias.includes(dia) && minutos >= b.desde && minutos < b.hasta)
     return {
-      aplica: true,
       abierto: true,
       mensaje: 'Estamos abiertos',
       detalle: `Cierra hoy a las ${aTexto(bloque.hasta)}`,
@@ -120,7 +109,6 @@ export function estadoHorario() {
 
   const prox = proximaApertura(dia, minutos)
   return {
-    aplica: true,
     abierto: false,
     mensaje: 'Ahora estamos cerrados',
     detalle: HORARIO_TEXTO,

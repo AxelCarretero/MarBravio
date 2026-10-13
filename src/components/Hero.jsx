@@ -1,9 +1,12 @@
 import React from 'react'
 import { WHATSAPP_NUMBER, WHATSAPP_MSG } from '../App'
 import useHorario from '../useHorario'
+import { RESTRINGIR_PEDIDOS_POR_HORARIO } from '../horario'
 
 export default function Hero() {
   const horario = useHorario()
+  // El interruptor solo controla los botones; el letrero siempre se muestra.
+  const mostrarAviso = !horario.abierto || RESTRINGIR_PEDIDOS_POR_HORARIO
 
   return (
     <header id="inicio" className="hero">
@@ -25,7 +28,7 @@ export default function Hero() {
         </div>
 
         {/* ---------- Aviso de horario ---------- */}
-        {horario.aplica && (
+        {mostrarAviso && (
           <div className={`horario-banner ${horario.abierto ? 'abierto' : 'cerrado'}`} role="status">
             <span className="material-icons">{horario.abierto ? 'storefront' : 'schedule'}</span>
             <div>

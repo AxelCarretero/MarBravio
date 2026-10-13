@@ -52,8 +52,15 @@ h1, h2, h3, h4, .serif {
   text-transform: uppercase;
   font-size: 0.8rem;
   transition: color .25s;
+  /* area de toque comoda en movil */
+  padding: .6rem 0;
+  display: block;
 }
 .mb-navbar .nav-link:hover { color: var(--sky) !important; }
+.mb-navbar .navbar-toggler {
+  padding: .45rem .6rem;
+  font-size: 1.3rem;
+}
 
 /* Botón de música en el header */
 .music-toggle {
@@ -226,6 +233,7 @@ section { padding: 80px 0; }
 .menu-card p { color: rgba(246,241,231,.75); font-size: .92rem; flex: 1; }
 .menu-card .btn-agregar {
   width: 100%;
+  min-height: 46px;
   padding: 10px 8px;
   border: none;
   border-radius: 22px;
@@ -340,6 +348,7 @@ section { padding: 80px 0; }
 .btn-tosti {
   margin-top: 14px;
   width: 100%;
+  min-height: 46px;
   padding: 12px 16px;
   border: 2px solid var(--yellow);
   border-radius: 22px;
@@ -790,12 +799,22 @@ section { padding: 80px 0; }
   color: rgba(246, 241, 231, .8);
 }
 
+/* En pantallas angostas los datos bancarios se apilan: la CLABE
+   necesita mas ancho del que queda en 3 columnas. */
+@media (max-width: 575.98px) {
+  .dato-transferencia {
+    grid-template-columns: 1fr 40px;
+    gap: 4px 10px;
+  }
+  .dato-transferencia__etiqueta { grid-column: 1 / -1; }
+  .dato-transferencia__valor { font-size: 1rem; }
+  .btn-copiar { width: 40px; height: 40px; }
+}
+
 @media (max-width: 360px) {
   .opciones-pago { gap: 8px; }
   .opcion-pago { min-height: 120px; }
   .opcion-pago strong { font-size: 1rem; }
-  .dato-transferencia { grid-template-columns: 1fr 36px; }
-  .dato-transferencia__etiqueta { grid-column: 1 / -1; }
 }
 
 /* ---------- Horario de pedidos ---------- */
@@ -878,6 +897,7 @@ section { padding: 80px 0; }
 .btn-extras {
   width: auto;
   min-width: 0;
+  min-height: 46px;
   padding: 10px 20px;
   border: none;
   border-radius: 22px;
