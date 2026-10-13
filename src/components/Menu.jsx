@@ -126,6 +126,29 @@ const TOSTI = {
   precio: 180,
 }
 
+/**
+ * Como se escribe cada articulo dentro del pedido que llega por WhatsApp.
+ * Los nombres de los aguachiles vienen en mayusculas (VERDE, TROPICAL...),
+ * aqui van en minúscula porque arrancan la linea del pedido.
+ */
+// Los tostitos se escriben como los pide el restaurante: "Tosti rojo", no "Tosti roja"
+const SABOR_TOSTI_EN_PEDIDO = {
+  VERDE: 'verde',
+  TROPICAL: 'tropical',
+  ROJA: 'rojo',
+  NEGRO: 'negro',
+}
+
+function nombreEnPedido(item) {
+  if (item.tipo === TOSTI.tipo) {
+    const sabor = SABOR_TOSTI_EN_PEDIDO[item.sabor] || item.sabor.toLowerCase()
+    return `Tosti ${sabor}`
+  }
+  if (item.tipo === 'orden') return `${item.nombre.toLowerCase()} (Orden)`
+  if (item.tipo === 'media') return `${item.nombre.toLowerCase()} (1/2)`
+  return item.nombre
+}
+
 // Mercado Pago todavia no esta disponible: queda en la lista pero con activo: false
 // para ocultarlo sin borrarlo. Basta con poner activo: true cuando este listo.
 const METODOS_PAGO = [
@@ -276,11 +299,12 @@ export default function Menu() {
     }
     const lineas = cart
       .map((i) => {
-        const sinFicha = i.tipo === 'extra' || i.tipo === 'tosti'
-        const etiqueta = sinFicha
-          ? i.nombre
-          : `Aguachile ${i.nombre} (${i.tipo === 'orden' ? 'Orden Bravía' : '1/2 Orden'})`
-        const picor = sinFicha ? '' : ` — Picor: ${i.picor || 'medio'}`
+        // Como se lee cada cosa en el pedido que llega al WhatsApp:
+        //  - Tosti de aguachile -> "Tosti verde"
+        //  - Aguachile entero    -> "Verde (Orden)"
+        //  - Aguachile medio     -> "Verde (1/2)"
+        const etiqueta = nombreEnPedido(i)
+        const picor = i.tipo === 'orden' || i.tipo === 'media' ? ` — Picor: ${i.picor || 'medio'}` : ''
         return `• ${i.qty}x ${etiqueta}${picor} — $${i.precio * i.qty}${i.nota ? ` — ${i.nota}` : ''}`
       })
       .join('\n')
