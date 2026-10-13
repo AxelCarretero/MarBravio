@@ -119,7 +119,7 @@ EXTRAS.forEach((e) => (e.tipo = 'extra'))
 
 // Tosti de aguachiles: acompanamiento que se agrega directo desde los precios
 const TOSTI = {
-  nombre: 'Tosti de aguachiles',
+  nombre: 'Tosti Aguachiles',
   tipo: 'tosti',
   icono: 'tosti',
   color: '#f2b23e',
@@ -377,13 +377,13 @@ export default function Menu() {
         </p>
 
         <div className="prices-box mt-4">
-          <h3 className="aguachiles-titulo">AGUACHILES</h3>
+          <h3 className="aguachiles-titulo">TOSTI</h3>
 
           <div className="tosti-card">
             <span className="tosti-card__icon">
               <IconoAguachile tipo={TOSTI.icono} color={TOSTI.color} />
             </span>
-            <h4 className="tosti-card__nombre">Tosti de aguachiles</h4>
+            <h4 className="tosti-card__nombre">Tosti Aguachiles</h4>
             <div className="tosti-card__precio">${TOSTI.precio}</div>
             <button
               className={`btn-agregar btn-tosti ${agregado?.startsWith('tosti-') ? 'agregado' : ''}`}

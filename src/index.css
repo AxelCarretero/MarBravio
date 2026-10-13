@@ -377,7 +377,7 @@ section { padding: 80px 0; }
 .price-col h4 { font-family: 'Playfair Display', serif; color: var(--cream); letter-spacing: 2px; font-size: 1.05rem; }
 .price-col .amount { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--cream); }
 
-/* Titulo grande AGUACHILES + tarjeta del tosti */
+/* Titulo grande TOSTI + tarjeta del tosti */
 .aguachiles-titulo {
   text-align: center;
   font-family: 'Playfair Display', serif;
