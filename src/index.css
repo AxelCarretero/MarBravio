@@ -906,6 +906,36 @@ section { padding: 80px 0; }
   flex: 0 0 58px;
 }
 .extras-icon svg { width: 32px; height: 32px; stroke-width: 2; }
+
+/* Cada extra ocupa su propia fila, con separador entre uno y otro */
+.extras-box__titulo {
+  margin: 0 0 14px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  color: var(--cream);
+}
+.extra-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+}
+.extra-fila + .extra-fila {
+  border-top: 1px dashed rgba(232, 130, 58, 0.3);
+}
+.extra-fila .extras-icon {
+  background: rgba(232, 130, 58, 0.1);
+}
+
+/* En celular la fila se apila: nombre arriba, contador y boton abajo a lo ancho */
+@media (max-width: 575.98px) {
+  .extras-box { padding: 16px 14px; }
+  .extra-fila { flex-direction: column; align-items: stretch; gap: 10px; }
+  .extra-fila .btn-extras { flex: 1 1 auto; }
+}
 .extras-contador {
   font-family: 'Playfair Display', serif;
   font-size: 1.15rem;

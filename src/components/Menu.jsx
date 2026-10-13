@@ -36,6 +36,15 @@ const ICONOS = {
       <path d="M7 17.5h18" />
     </>
   ),
+  // Aguacate: media pieza con hueso
+  aguacate: (
+    <>
+      <path d="M16 3.5c4.6 0 8.4 4.3 8.4 9.4 0 5.2-3.8 9.1-8.4 9.1S7.6 18.1 7.6 12.9C7.6 7.8 11.4 3.5 16 3.5z" />
+      <ellipse cx="16" cy="11.8" rx="4" ry="4.8" />
+      <path d="M16 16.6v1.6" />
+      <circle cx="16" cy="11.8" r="1.7" />
+    </>
+  ),
   // Salsa en frasco con gotero
   salsa: (
     <>
@@ -83,14 +92,30 @@ const aguachiles = [
   { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', imagen: '/assets/aguachil-negro.png', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
 ]
 
-// Extra opcional que se puede sumar a cualquier pedido
-const EXTRA_SALSA = {
-  nombre: 'Salsa marisquera extra',
-  tipo: 'extra',
-  icono: 'salsa',
-  color: '#e8823a',
-  precio: 15,
-}
+// Extras opcionales que se pueden sumar a cualquier pedido (sin limite)
+const EXTRAS = [
+  {
+    clave: 'salsa',
+    nombre: 'Salsa marisquera extra',
+    descripcion: 'Extra de la casa · agrega las que quieras',
+    icono: 'salsa',
+    color: '#e8823a',
+    precio: 15,
+    etiqueta: 'Salsa marisquera con sabor',
+  },
+  {
+    clave: 'aguacate',
+    nombre: 'Aguacate extra',
+    descripcion: 'Porción adicional de aguacate',
+    icono: 'aguacate',
+    color: '#aed16a',
+    precio: 10,
+    etiqueta: 'Porción extra de aguacate',
+  },
+]
+
+// Todos los extras comparten el mismo tipo para que el carrito los agrupe igual
+EXTRAS.forEach((e) => (e.tipo = 'extra'))
 
 // Tosti de aguachiles: acompanamiento que se agrega directo desde los precios
 const TOSTI = {
@@ -178,20 +203,19 @@ export default function Menu() {
     setTimeout(() => setAgregado(null), 1600)
   }
 
-  const extrasEnCarrito = cart
-    .filter((i) => i.tipo === EXTRA_SALSA.tipo)
-    .reduce((sum, i) => sum + i.qty, 0)
+  const cantidadExtra = (clave) =>
+    cart.filter((i) => i.clave === clave).reduce((sum, i) => sum + i.qty, 0)
 
-  const agregarSalsaExtra = () => {
+  const agregarExtra = (extra) => {
     if (pedidosCerrados) return
     setCart((prev) => {
-      const existe = prev.find((i) => i.tipo === EXTRA_SALSA.tipo)
+      const existe = prev.find((i) => i.clave === extra.clave)
       if (existe) {
-        return prev.map((i) => i.tipo === EXTRA_SALSA.tipo ? { ...i, qty: i.qty + 1 } : i)
+        return prev.map((i) => (i.clave === extra.clave ? { ...i, qty: i.qty + 1 } : i))
       }
-      return [...prev, { ...EXTRA_SALSA, qty: 1, nota: '', picor: null }]
+      return [...prev, { ...extra, qty: 1, nota: '', picor: null }]
     })
-    setAgregado(`${EXTRA_SALSA.nombre}-extra`)
+    setAgregado(`${extra.clave}-extra`)
     setTimeout(() => setAgregado(null), 1600)
   }
 
@@ -331,26 +355,29 @@ export default function Menu() {
 
           {/* ---------- Extras ---------- */}
           <div className="extras-box mt-3 mb-4">
-            <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
-              <div className="d-flex align-items-center gap-3">
-                <span className="extras-icon">
-                  <IconoAguachile tipo={EXTRA_SALSA.icono} color={EXTRA_SALSA.color} />
-                </span>
-                <div>
-                  <strong style={{ color: 'var(--cream)' }}>¿Quieres más salsa marisquera?</strong>
-                  <br />
-                  <small style={{ color: 'rgba(246,241,231,.7)' }}>
-                    Extra de la casa · ${EXTRA_SALSA.precio} c/u · agrega las que quieras
-                  </small>
+            <p className="extras-box__titulo">¿Quieres agregar extras?</p>
+            {EXTRAS.map((x) => (
+              <div className="extra-fila" key={x.clave}>
+                <div className="d-flex align-items-center gap-3">
+                  <span className="extras-icon">
+                    <IconoAguachile tipo={x.icono} color={x.color} alt="" />
+                  </span>
+                  <div>
+                    <strong style={{ color: 'var(--cream)' }}>{x.nombre}</strong>
+                    <br />
+                    <small style={{ color: 'rgba(246,241,231,.7)' }}>
+                      {x.descripcion} · ${x.precio} c/u
+                    </small>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                  <span className="extras-contador">{cantidadExtra(x.clave)}</span>
+                  <button className="btn-extras" onClick={() => agregarExtra(x)} disabled={pedidosCerrados}>
+                    + Agregar ${x.precio}
+                  </button>
                 </div>
               </div>
-              <div className="d-flex align-items-center gap-2">
-                <span className="extras-contador">{extrasEnCarrito}</span>
-                <button className="btn-extras" onClick={agregarSalsaExtra} disabled={pedidosCerrados}>
-                  + Agregar salsa extra ${EXTRA_SALSA.precio}
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
           {cart.length === 0 ? (
             <p style={{ color: 'rgba(246,241,231,.7)' }}>Aún no agregas nada. Usa los botones <em>+ Agregar al pedido</em> de arriba.</p>
@@ -384,7 +411,7 @@ export default function Menu() {
 
                   <div className="cart-item__picor">
                     {i.tipo === 'extra' ? (
-                      <small className="cart-item__nota-label">Salsa marisquera con sabor</small>
+                      <small className="cart-item__nota-label">{i.etiqueta}</small>
                     ) : i.tipo === 'tosti' ? (
                       <small className="cart-item__nota-label">Acompañamiento</small>
                     ) : (
@@ -398,8 +425,12 @@ export default function Menu() {
                   </div>
 
                   <div className="cart-item__nota">
-                    <input className="form-control form-control-sm" placeholder="Ej. sin cebolla"
-                      value={i.nota} onChange={(e) => setNota(i.nombre, i.tipo, e.target.value)} />
+                    <input
+                      className="form-control form-control-sm"
+                      placeholder={i.tipo === 'extra' ? 'Ej. aparte' : 'Ej. sin cebolla'}
+                      value={i.nota}
+                      onChange={(e) => setNota(i.nombre, i.tipo, e.target.value)}
+                    />
                   </div>
 
                   <button className="btn btn-sm btn-danger cart-item__remove" onClick={() => quitar(i.nombre, i.tipo)}>
