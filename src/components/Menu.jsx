@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
 import useHorario from '../useHorario'
@@ -126,11 +126,16 @@ const TOSTI = {
   precio: 180,
 }
 
+// Mercado Pago todavia no esta disponible: queda en la lista pero con activo: false
+// para ocultarlo sin borrarlo. Basta con poner activo: true cuando este listo.
 const METODOS_PAGO = [
-  { id: 'Efectivo', titulo: 'Efectivo', subtitulo: 'Pagar al recibir', icono: 'payments' },
-  { id: 'Transferencia', titulo: 'Transferencia', subtitulo: 'Transferencia bancaria', icono: 'account_balance' },
-  { id: 'Mercado Pago', titulo: 'Mercado Pago', subtitulo: 'Pago con Mercado Pago', icono: 'shopping_bag' },
+  { id: 'Efectivo', titulo: 'Efectivo', subtitulo: 'Pagar al recibir', icono: 'payments', activo: true },
+  { id: 'Transferencia', titulo: 'Transferencia', subtitulo: 'Transferencia bancaria', icono: 'account_balance', activo: true },
+  { id: 'Mercado Pago', titulo: 'Mercado Pago', subtitulo: 'Pago con Mercado Pago', icono: 'shopping_bag', activo: false },
 ]
+
+// Solo se pintan los metodos activos
+const METODOS_PAGO_VISIBLES = METODOS_PAGO.filter((m) => m.activo)
 
 // Datos tomados de la imagen de la referencia (solo la informacion, sin su diseno)
 const DATOS_TRANSFERENCIA = [
@@ -160,6 +165,8 @@ export default function Menu() {
   const [notaGeneral, setNotaGeneral] = useState('')
   const [destinatario, setDestinatario] = useState('')
   const [metodoPago, setMetodoPago] = useState(null)
+  const [faltaPago, setFaltaPago] = useState(false)
+  const refPago = useRef(null)
   const [copiado, setCopiado] = useState(null)
   const [agregado, setAgregado] = useState(null)
 
@@ -260,6 +267,13 @@ export default function Menu() {
 
   const enviarPedido = () => {
     if (cart.length === 0 || pedidosCerrados) return
+    // No dejamos enviar sin elegir como pagar: el metodo va en el mensaje
+    // de WhatsApp y sin el el restaurante no sabe como cobrar.
+    if (!metodoPago) {
+      setFaltaPago(true)
+      refPago.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
     const lineas = cart
       .map((i) => {
         const sinFicha = i.tipo === 'extra' || i.tipo === 'tosti'
@@ -459,16 +473,19 @@ export default function Menu() {
                 </div>
               </div>
               {/* ---------- Metodos de pago ---------- */}
-              <div className="metodo-pago">
+              <div className={`metodo-pago ${faltaPago && !metodoPago ? 'pago-error' : ''}`} ref={refPago}>
                 <h3 className="serif">¿Cómo deseas pagar?</h3>
                 <div className="opciones-pago">
-                  {METODOS_PAGO.map((m) => (
+                  {METODOS_PAGO_VISIBLES.map((m) => (
                     <button
                       key={m.id}
                       type="button"
                       className={`opcion-pago ${metodoPago === m.id ? 'seleccionada' : ''}`}
                       aria-pressed={metodoPago === m.id}
-                      onClick={() => setMetodoPago(m.id)}
+                      onClick={() => {
+                        setMetodoPago(m.id)
+                        setFaltaPago(false)
+                      }}
                     >
                       <span className="material-icons icono-pago">{m.icono}</span>
                       <strong>{m.titulo}</strong>
@@ -477,6 +494,12 @@ export default function Menu() {
                     </button>
                   ))}
                 </div>
+                {faltaPago && !metodoPago && (
+                  <p className="pago-faltante" role="alert">
+                    <span className="material-icons">error_outline</span>
+                    Elige un método de pago para enviar tu pedido.
+                  </p>
+                )}
                 <p id="mensaje-pago">{mensajePago}</p>
 
                 {metodoPago === 'Transferencia' && (

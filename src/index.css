@@ -665,9 +665,10 @@ section { padding: 80px 0; }
   margin-bottom: 18px;
   color: var(--cream);
 }
+/* auto-fit reparte el ancho entre los metodos que haya, sin importar si son 2 o 3 */
 .opciones-pago {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
 }
 .opcion-pago {
@@ -702,6 +703,41 @@ section { padding: 80px 0; }
   color: var(--sky);
   font-size: .8rem;
 }
+
+/* Aviso: falta elegir metodo de pago antes de enviar el pedido */
+.pago-faltante {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 11px 14px;
+  border: 1px solid rgba(224, 75, 58, .7);
+  background: rgba(224, 75, 58, .14);
+  border-radius: 12px;
+  color: #ffb3a8;
+  font-size: .95rem;
+  font-weight: 600;
+  animation: pagoTemble .4s ease;
+}
+.pago-faltante .material-icons {
+  font-size: 20px;
+  color: var(--red);
+}
+.metodo-pago.pago-error {
+  border-radius: 18px;
+  box-shadow: 0 0 0 2px rgba(224, 75, 58, .55);
+  animation: pagoTemble .4s ease;
+}
+@keyframes pagoTemble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pago-faltante,
+  .metodo-pago.pago-error { animation: none; }
+}
 /* Check que solo aparece en la opcion elegida */
 .opcion-pago .pago-check {
   position: absolute;
@@ -735,11 +771,6 @@ section { padding: 80px 0; }
   font-size: .85rem;
   margin: 15px 0 0;
   min-height: 1.2em;
-}
-
-/* Tres metodos de pago: 3 columnas en escritorio, 1 en movil */
-@media (min-width: 576px) {
-  .opciones-pago { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ---------- Datos de transferencia ---------- */
