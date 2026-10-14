@@ -10,7 +10,7 @@
 
 // false = los botones funcionan siempre
 // true  = los botones solo funcionan dentro del horario de pedidos
-export const RESTRINGIR_PEDIDOS_POR_HORARIO = false
+export const RESTRINGIR_PEDIDOS_POR_HORARIO = true
 
 // Zona horaria del restaurante (no la del visitante)
 export const ZONA_HORARIA = 'America/Mexico_City'

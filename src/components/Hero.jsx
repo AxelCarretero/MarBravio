@@ -1,7 +1,6 @@
 import React from 'react'
 import { WHATSAPP_NUMBER, WHATSAPP_MSG } from '../App'
 import useHorario from '../useHorario'
-import { RESTRINGIR_PEDIDOS_POR_HORARIO } from '../horario'
 
 // La ola decorativa: un grupo de trazos finos que suben y bajan, igual que la
 // ola a pincel del logo. Se dibuja con varias curvas paralelas y cada una
@@ -22,8 +21,10 @@ const OLA_LINEAS = [
 
 export default function Hero() {
   const horario = useHorario()
-  // El interruptor solo controla los botones; el letrero siempre se muestra.
-  const mostrarAviso = !horario.abierto || RESTRINGIR_PEDIDOS_POR_HORARIO
+  // El interruptor maestro solo controla los botones de pedido.
+  // Este letrero siempre se muestra, para que el cliente sepa de una vez
+  // si estamos abiertos o cerrados y hasta cuando.
+  const mostrarAviso = true
 
   return (
     <header id="inicio" className="hero">
