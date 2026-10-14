@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { WHATSAPP_NUMBER } from '../App'
 import BotonWhatsApp from './BotonWhatsApp'
+import useHorario from '../useHorario'
 
 // Por ahora solo se muestran los datos y el mapa. Ponlo en true para volver
 // a mostrar el formulario de contacto debajo.
@@ -11,11 +12,15 @@ const DATOS_CONTACTO = [
   { icono: 'location_on', etiqueta: 'Dirección', valor: 'Pamplona 1191, Santa Elena Alcalde, C.P. 44220, Guadalajara, Jal.' },
   { icono: 'phone', etiqueta: 'Teléfono', valor: '+52 1 33 2599 5637', enlace: 'tel:+523325995637' },
   { icono: 'email', etiqueta: 'Correo', valor: 'zercherrera@gmail.com', enlace: 'mailto:zercherrera@gmail.com' },
-  { icono: 'schedule', etiqueta: 'Horario', valor: 'Mié, Jue y Sáb: 4:30 PM – 7:00 PM · Dom: 10:00 AM – 4:00 PM' },
+  // El horario no va aqui a proposito: se lee del modulo de horario para que
+  // siempre muestre el que esta vigente (ver DATOS_CONTACTO_HORARIO).
 ]
 
 export default function Contacto() {
   const [form, setForm] = useState({ nombre: '', telefono: '', mensaje: '' })
+  // El horario se lee del modulo central, asi nunca queda desactualizado
+  const horario = useHorario()
+  const datos = [...DATOS_CONTACTO, { icono: 'schedule', etiqueta: 'Horario', valor: horario.textoHorario }]
 
   const enviar = (e) => {
     e.preventDefault()
@@ -46,7 +51,7 @@ export default function Contacto() {
               </p>
 
               <ul className="contacto-lista">
-                {DATOS_CONTACTO.map((d) => (
+                {datos.map((d) => (
                   <li className="contacto-dato" key={d.etiqueta}>
                     <span className="material-icons contacto-dato__icono" aria-hidden="true">{d.icono}</span>
                     <span className="contacto-dato__texto">
