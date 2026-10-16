@@ -87,7 +87,7 @@ function IconoAguachile({ tipo, color, imagen, alt }) {
 
 const aguachiles = [
   { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', imagen: '/assets/aguachil-verde.png', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
-  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', imagen: '/assets/aguachil-tropical.png', precio: 245, desc: 'Salsa de mango con un toque de habanero tatemado, limón, ajo, sal y pimienta.' },
+  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', imagen: '/assets/aguachil-tropical.png', precio: 245, desc: 'Fruta de temporada con un toque habanero tatemado, Limón, ajo, sal y pimienta' },
   { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', imagen: '/assets/aguachil-roja.png', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
   { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', imagen: '/assets/aguachil-negro.png', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
 ]
