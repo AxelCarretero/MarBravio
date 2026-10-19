@@ -65,10 +65,16 @@ MarBravio/
 ├── public/
 │   └── assets/
 │       ├── logo.jpg         # Logo oficial
-│       └── menu01.jpeg      # Carta del menú (modal)
+│       └── carta-menu.jpg   # Carta del menú (modal "Ver carta completa")
+├── imagenes/                # Originales sin comprimir (no se publican)
+│   ├── menu01.jpeg          # Fuente de los iconos de aguachile
+│   └── carta-menu.png       # Fuente de la carta (ver comprimir-carta.mjs)
 └── src/
     ├── main.jsx             # Bootstrap + Materialize CSS + App
     ├── index.css            # Estilos globales, paleta, animaciones
+    ├── precios.js           # Precios del menú (única fuente de verdad)
+    ├── horario.js           # Horario de pedidos y letrero de abierto/cerrado
+    ├── useHorario.js        # Hook que refresca el horario cada minuto
     ├── App.jsx              # Componente raíz + constantes WhatsApp
     └── components/
         ├── Navbar.jsx       # Menú de navegación (anclas)

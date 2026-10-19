@@ -629,7 +629,16 @@ export default function Menu() {
 
       <div id="menuModal" className="modal" style={{ maxWidth: 560 }}>
         <div className="modal-content" style={{ background: '#0a2540', padding: 12 }}>
-          <img src="/assets/menu01.jpeg" alt="Carta MarBravio" className="img-fluid" style={{ borderRadius: 10 }} />
+          <img
+            src="/assets/carta-menu.jpg"
+            alt="Carta MarBravio"
+            className="img-fluid"
+            width={1024}
+            height={1536}
+            loading="lazy"
+            decoding="async"
+            style={{ borderRadius: 10 }}
+          />
         </div>
         <div className="modal-footer" style={{ background: '#0a2540' }}>
           <a href="#!" className="modal-close btn-flat" style={{ color: '#79c4e8' }}>Cerrar</a>
