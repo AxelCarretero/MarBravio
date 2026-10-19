@@ -94,10 +94,10 @@ MarBravio/
 - 4 tarjetas: Verde (Clásico), Tropical (El Travieso), Roja (De la Casa), Negro (El Condenado)
 - Descripción de cada salsa + nota compartida: *Todas llevan pepino, cebolla morada, coronado con aguacate y una salsa marisquera (receta de la casa)*
 - Frase destacada: *Tú decides qué tan bravío lo quieres 🌶️*
-- Precio visible por tarjeta (`$245`)
+- Precio visible por tarjeta (`$225`)
 
 #### 🛒 Carrito de pedidos (en `Menu.jsx`)
-- Dos botones por aguachile: **+ Orden $245** y **+ ½ Orden $160**, separados y alineados
+- Dos botones por aguachile: **+ Orden $225** y **+ ½ Orden $145**, separados y alineados
 - Feedback al agregar: el botón se pone verde con *"✓ Orden agregada"* / *"✓ ½ Orden agregada"* + animación pop
 - En el carrito: cantidad con botones − / +, subtotal por línea, campo de **especificación por platillo**, botón de quitar
 - Nota general: *¿Algo más en especial?* (tosti, salsa extra, etc.)
@@ -106,9 +106,11 @@ MarBravio/
 #### 💰 Precios (referencia)
 | Platillo | Precio |
 |---|---|
-| Orden Bravía | $245 |
-| 1/2 Orden | $160 |
-| Tosti | $180 *(pendiente de agregar al carrito)* |
+| Orden Bravía | $225 |
+| 1/2 Orden | $145 |
+| Tosti | $150 |
+
+> Los tres precios se editan en un solo lugar: `src/precios.js` (`PRECIOS`).
 
 ### 3. Servicios
 Tarjetas con iconos de Materialize: Comer en el lugar, Para llevar, Catering, Entrega a domicilio.

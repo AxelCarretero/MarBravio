@@ -3,6 +3,7 @@ import M from 'materialize-css'
 import { WHATSAPP_NUMBER } from '../App'
 import useHorario from '../useHorario'
 import { RESTRINGIR_PEDIDOS_POR_HORARIO } from '../horario'
+import { PRECIOS } from '../precios'
 import BotonWhatsApp from './BotonWhatsApp'
 
 // Iconos dibujados a mano con el mismo estilo de línea para que los cuatro
@@ -86,10 +87,10 @@ function IconoAguachile({ tipo, color, imagen, alt }) {
 }
 
 const aguachiles = [
-  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', imagen: '/assets/aguachil-verde.png', precio: 245, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
-  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', imagen: '/assets/aguachil-tropical.png', precio: 245, desc: 'Fruta de temporada con un toque habanero tatemado, Limón, ajo, sal y pimienta' },
-  { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', imagen: '/assets/aguachil-roja.png', precio: 245, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
-  { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', imagen: '/assets/aguachil-negro.png', precio: 245, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
+  { nombre: 'VERDE', apodo: '(Clásico)', color: '#aed16a', imagen: '/assets/aguachil-verde.png', precio: PRECIOS.orden, desc: 'Salsa verde clásica con un toque de la casa: chile verde, perejil, ajo, sal y pimienta.' },
+  { nombre: 'TROPICAL', apodo: '(El Travieso)', color: '#f2b23e', imagen: '/assets/aguachil-tropical.png', precio: PRECIOS.orden, desc: 'Fruta de temporada con un toque habanero tatemado, Limón, ajo, sal y pimienta' },
+  { nombre: 'ROJA', apodo: '(De la Casa)', color: '#e04b3a', imagen: '/assets/aguachil-roja.png', precio: PRECIOS.orden, desc: 'Combinación de chiles, cacahuate, ajo, cebolla, limón, sal y pimienta.' },
+  { nombre: 'NEGRO', apodo: '(El Condenado)', color: '#e8e8e8', imagen: '/assets/aguachil-negro.png', precio: PRECIOS.orden, desc: 'Combinación de salsas negras con un toque ahumado: habanero, ajo, sal y pimienta.' },
 ]
 
 // Extras opcionales que se pueden sumar a cualquier pedido (sin limite)
@@ -123,7 +124,7 @@ const TOSTI = {
   tipo: 'tosti',
   icono: 'tosti',
   color: '#f2b23e',
-  precio: 180,
+  precio: PRECIOS.tosti,
 }
 
 /**
@@ -234,7 +235,7 @@ export default function Menu() {
       if (existe) {
         return prev.map((i) => i.nombre === a.nombre && i.tipo === tipo ? { ...i, qty: i.qty + 1 } : i)
       }
-      const precio = tipo === 'orden' ? 245 : 160
+      const precio = tipo === 'orden' ? PRECIOS.orden : PRECIOS.media
       return [...prev, { nombre: a.nombre, imagen: a.imagen, icono: a.icono, color: a.color, tipo, precio, qty: 1, nota: '', picor: 'medio' }]
     })
     setAgregado(`${a.nombre}-${tipo}`)
@@ -361,13 +362,13 @@ export default function Menu() {
                   onClick={() => agregar(a, 'orden')}
                   disabled={pedidosCerrados}
                   style={{ background: agregado === a.nombre + '-orden' ? '#25d366' : a.color }}>
-                  {agregado === a.nombre + '-orden' ? '✓ Orden agregada' : '+ Orden $245'}
+                  {agregado === a.nombre + '-orden' ? '✓ Orden agregada' : `+ Orden $${PRECIOS.orden}`}
                 </button>
                 <button className={`btn-agregar ${agregado === a.nombre + '-media' ? 'agregado' : ''}`}
                   onClick={() => agregar(a, 'media')}
                   disabled={pedidosCerrados}
                   style={{ background: agregado === a.nombre + '-media' ? '#25d366' : 'transparent', border: `2px solid ${a.color}`, color: agregado === a.nombre + '-media' ? '#fff' : a.color }}>
-                  {agregado === a.nombre + '-media' ? '✓ ½ Orden agregada' : '+ ½ Orden $160'}
+                  {agregado === a.nombre + '-media' ? '✓ ½ Orden agregada' : `+ ½ Orden $${PRECIOS.media}`}
                 </button>
               </div>
             </div>

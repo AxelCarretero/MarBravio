@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { WHATSAPP_NUMBER } from '../App'
 import BotonWhatsApp from './BotonWhatsApp'
 import useHorario from '../useHorario'
+import { PRECIOS } from '../precios'
 
 // Por ahora solo se muestran los datos y el mapa. Ponlo en true para volver
 // a mostrar el formulario de contacto debajo.
@@ -46,8 +47,8 @@ export default function Contacto() {
               </h3>
               <p className="contacto-datos__texto">
                 Cocina del mar en el poniente de Guadalajara. Mariscos frescos, aguachiles
-                preparados al momento y salsa marisquera de la casa. Orden Bravía $245,
-                1/2 orden $160 y Tosti $180.
+                preparados al momento y salsa marisquera de la casa. Orden Bravía ${PRECIOS.orden},
+                1/2 orden ${PRECIOS.media} y Tosti ${PRECIOS.tosti}.
               </p>
 
               <ul className="contacto-lista">
