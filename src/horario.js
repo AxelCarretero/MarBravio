@@ -27,20 +27,22 @@ const HORARIO = {
 
 /**
  * HORARIO ESPECIAL: solo aplica dentro del rango de fechas de abajo
- * (de lunes 12 a domingo 18 de octubre de 2026, ambos incluidos).
+ * (esta semana: de lunes 19 a domingo 25 de octubre de 2026, ambos incluidos).
  * Fuera de ese rango el sitio vuelve solo al HORARIO normal, asi que
  * no hay que hacer nada manualmente cuando termine la semana.
  *
  * Para otro cambio temporal: edita estas dos fechas y los bloques.
  */
 const HORARIO_ESPECIAL = {
-  desde: '2026-10-12',
-  hasta: '2026-10-19', // exclusivo
+  desde: '2026-10-19',
+  hasta: '2026-10-26', // exclusivo
   bloques: [
-    { dias: [5, 6], desde: 14 * 60 + 30, hasta: 18 * 60 + 30 }, // Viernes y Sabado: 2:30 PM - 6:30 PM
-    { dias: [0], desde: 10 * 60, hasta: 16 * 60 }, // Domingo: 10:00 AM - 4:00 PM
+    { dias: [3, 4], desde: 16 * 60 + 30, hasta: 19 * 60 }, // Miercoles y Jueves: 4:30 PM - 7:00 PM
+    { dias: [5], desde: 15 * 60, hasta: 18 * 60 + 30 }, // Viernes: 3:00 PM - 6:30 PM
+    // Sabado no aparece: esta semana se descansa
+    { dias: [0], desde: 11 * 60 + 30, hasta: 16 * 60 }, // Domingo: 11:30 AM - 4:00 PM
   ],
-  texto: 'Viernes y Sábado: 2:30 PM – 6:30 PM · Domingo: 10:00 AM – 4:00 PM',
+  texto: 'Miércoles y Jueves: 4:30 PM – 7:00 PM · Viernes: 3:00 PM – 6:30 PM · Sábado: cerrado · Domingo: 11:30 AM – 4:00 PM',
 }
 
 const NOMBRES_DIA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']

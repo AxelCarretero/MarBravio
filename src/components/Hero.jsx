@@ -67,7 +67,7 @@ export default function Hero() {
               ) : (
                 <p>
                   {horario.detalle}
-                  {horario.proxima ? ` ${horario.proxima}` : ''}
+                  {horario.proxima && <span className="horario-banner__proxima">{horario.proxima}</span>}
                 </p>
               )}
             </div>
